@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VilleNova — Agenda Culturel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="w">
+    <a href="#" class="logo">Ville<span>Nova</span></a>
+    <ul>
+      <li><a href="#">Agenda</a></li>
+      <li><a href="#">Carte</a></li>
+      <li><a href="#">Lieux</a></li>
+      <li><a href="#">A propos</a></li>
+      <li><a href="#" class="nav-cta">Mes favoris</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="w">
+    <h1>La culture de<br><em>VilleNova</em>,<br>pour tous.</h1>
+    <p class="sub">Concerts, expositions, spectacles — découvrez l'agenda culturel de votre ville, centralisé et accessible.</p>
+    <div class="search">
+      <input type="search" placeholder="Concert, exposition, theatre...">
+      <select>
+        <option>Toutes les dates</option>
+        <option>Ce week-end</option>
+        <option>Cette semaine</option>
+        <option>Ce mois-ci</option>
+      </select>
+      <button>Rechercher</button>
+    </div>
+    <div class="stats">
+      <div><strong>128</strong><span>evenements ce mois</span></div>
+      <div><strong>34</strong><span>lieux culturels</span></div>
+      <div><strong>42%</strong><span>entree gratuite</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="filters">
+  <div class="w">
+    <span class="flabel">Filtrer</span>
+    <button class="chip on">Tous</button>
+    <button class="chip">Concerts</button>
+    <button class="chip">Expositions</button>
+    <button class="chip">Spectacles</button>
+    <button class="chip">Cinema</button>
+    <button class="chip">Danse</button>
+    <button class="chip">Ateliers</button>
+    <div class="sep"></div>
+    <button class="chip">Gratuit</button>
+    <button class="chip">Acces PMR</button>
+  </div>
+</div>
+
+<main>
+  <div class="sh">
+    <div>
+      <h2>A l'affiche cette semaine</h2>
+      <p class="ct">24 evenements trouves</p>
+    </div>
+  </div>
+
+  <article class="featured">
+    <div class="fbadge">A LA UNE</div>
+    <div>
+      <div>
+        <span class="fcat">Concert</span>
+        <span class="fdate">Vendredi 14 juin 2025 · 20h30</span>
+      </div>
+      <h3>Nuit des Etoiles —<br>Orchestre Philharmonique</h3>
+      <p>Une soiree exceptionnelle sous les etoiles avec l'Orchestre Philharmonique de VilleNova. Au programme : Debussy, Ravel et une creation mondiale.</p>
+      <div class="finfo">
+        <span>Parc de la Liberte</span>
+        <span>Duree : 2h15</span>
+        <span>Des 8 ans · Acces PMR</span>
+      </div>
+      <div class="fbtns">
+        <button class="btn-p">Voir les details</button>
+        <button class="btn-g">Reserver — 18 €</button>
+      </div>
+    </div>
+    <div class="fimg">
+      <span>Photo de l'evenement</span>
+    </div>
+  </article>
+
+  <div class="grid">
+
+    <article class="card">
+      <div class="cimg">
+        <span>Image</span>
+        <span class="cbadge">Exposition</span>
+        <button class="cfav">&#9825;</button>
+      </div>
+      <div class="cbody">
+        <p class="cdate">Sam. 8 juin — Dim. 30 juin</p>
+        <h3>Lumieres du Monde — Art Contemporain</h3>
+        <p class="clieu">Musee d'Art Moderne</p>
+      </div>
+      <div class="cfoot">
+        <span class="free">Gratuit</span>
+        <button class="btn-b">En savoir plus</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="cimg">
+        <span>Image</span>
+        <span class="cbadge">Theatre</span>
+        <button class="cfav">&#9825;</button>
+      </div>
+      <div class="cbody">
+        <p class="cdate">Jeu. 12 juin · 19h00</p>
+        <h3>Hamlet — Compagnie du Soleil Levant</h3>
+        <p class="clieu">Theatre du Palais</p>
+      </div>
+      <div class="cfoot">
+        <span class="price">22 €</span>
+        <button class="btn-b">Reserver</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="cimg">
+        <span>Image</span>
+        <span class="cbadge">Concert</span>
+        <button class="cfav">&#9825;</button>
+      </div>
+      <div class="cbody">
+        <p class="cdate">Dim. 15 juin · 17h00</p>
+        <h3>Jazz en Plein Air — Sunset Sessions</h3>
+        <p class="clieu">Esplanade du Port</p>
+      </div>
+      <div class="cfoot">
+        <span class="free">Gratuit</span>
+        <button class="btn-b">En savoir plus</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="cimg">
+        <span>Image</span>
+        <span class="cbadge">Cinema</span>
+        <button class="cfav">&#9825;</button>
+      </div>
+      <div class="cbody">
+        <p class="cdate">Mar. 17 juin · 21h30</p>
+        <h3>Cine Plein Air — Retrospective Truffaut</h3>
+        <p class="clieu">Jardin des Arts</p>
+      </div>
+      <div class="cfoot">
+        <span class="price">8 €</span>
+        <button class="btn-b">Reserver</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="cimg">
+        <span>Image</span>
+        <span class="cbadge">Danse</span>
+        <button class="cfav">&#9825;</button>
+      </div>
+      <div class="cbody">
+        <p class="cdate">Ven. 20 juin · 20h00</p>
+        <h3>Ballet Contemporain — Corps en Mouvement</h3>
+        <p class="clieu">Centre Choregraphique</p>
+      </div>
+      <div class="cfoot">
+        <span class="price">15 €</span>
+        <button class="btn-b">Reserver</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="cimg">
+        <span>Image</span>
+        <span class="cbadge">Atelier</span>
+        <button class="cfav">&#9825;</button>
+      </div>
+      <div class="cbody">
+        <p class="cdate">Sam. 21 juin · 14h00</p>
+        <h3>Atelier Serigraphie — Initiation Tout Public</h3>
+        <p class="clieu">Fabrique Culturelle</p>
+      </div>
+      <div class="cfoot">
+        <span class="free">Gratuit</span>
+        <button class="btn-b">S'inscrire</button>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="more">
+    <button class="btn-l">Voir plus d'evenements (18 restants)</button>
+  </div>
+</main>
+
+<section class="newsletter">
+  <div class="w">
+    <div>
+      <h2>Ne manquez plus rien.</h2>
+      <p>Recevez chaque semaine notre selection d'evenements culturels.</p>
+    </div>
+    <div class="nform">
+      <input type="email" placeholder="votre@email.fr">
+      <button>S'inscrire</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="w">
+    <div class="brand">
+      <span class="logo">Ville<span>Nova</span></span>
+      <p>La plateforme culturelle officielle de VilleNova.</p>
+    </div>
+    <div>
+      <h4>Explorer</h4>
+      <ul>
+        <li><a href="#">Tous les evenements</a></li>
+        <li><a href="#">Carte interactive</a></li>
+        <li><a href="#">Lieux culturels</a></li>
+        <li><a href="#">Artistes locaux</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Pratique</h4>
+      <ul>
+        <li><a href="#">Accessibilite</a></li>
+        <li><a href="#">Tarifs solidaires</a></li>
+        <li><a href="#">Pass culture</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>La ville</h4>
+      <ul>
+        <li><a href="#">VilleNova.fr</a></li>
+        <li><a href="#">Politique culturelle</a></li>
+        <li><a href="#">Soumettre un evenement</a></li>
+        <li><a href="#">Presse</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fbot">
+    <span>© 2025 Mairie de VilleNova</span>
+    <div>
+      <a href="#">Mentions legales</a>
+      <a href="#">Confidentialite</a>
+      <a href="#">Accessibilite</a>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
