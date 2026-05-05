@@ -3,263 +3,406 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VilleNova — Agenda Culturel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta name="description" content="VilleNova — Agenda culturel centralisé : concerts, expositions, spectacles et actus de votre ville.">
+  <title>VilleNova — Culture, Concerts, Spectacles, Actus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+ 
+  <!-- SKIP LINK -->
+  <a href="#contenu-principal" class="skip-link">Aller au contenu principal</a>
 
-<nav>
-  <div class="w">
-    <a href="#" class="logo">Ville<span>Nova</span></a>
-    <ul>
-      <li><a href="#">Agenda</a></li>
-      <li><a href="#">Carte</a></li>
-      <li><a href="#">Lieux</a></li>
-      <li><a href="#">A propos</a></li>
-      <li><a href="#" class="nav-cta">Mes favoris</a></li>
-    </ul>
-  </div>
-</nav>
+  <!--  NAVIGATION -->
+  <nav aria-label="Navigation principale">
+    <div class="w">
 
-<header class="hero">
-  <div class="w">
-    <h1>La culture de<br><em>VilleNova</em>,<br>pour tous.</h1>
-    <p class="sub">Concerts, expositions, spectacles — découvrez l'agenda culturel de votre ville, centralisé et accessible.</p>
-    <div class="search">
-      <input type="search" placeholder="Concert, exposition, theatre...">
-      <select>
-        <option>Toutes les dates</option>
-        <option>Ce week-end</option>
-        <option>Cette semaine</option>
-        <option>Ce mois-ci</option>
-      </select>
-      <button>Rechercher</button>
-    </div>
-    <div class="stats">
-      <div><strong>128</strong><span>evenements ce mois</span></div>
-      <div><strong>34</strong><span>lieux culturels</span></div>
-      <div><strong>42%</strong><span>entree gratuite</span></div>
-    </div>
-  </div>
-</header>
+      <a href="index.html" class="logo" aria-label="VilleNova — Retour a l'accueil">
+        <picture>
+          <source srcset="VilleNova.webp" type="image/webp">
+          <img src="VilleNova.webp" alt="VilleNova — Culture Concerts Spectacles Actus" width="180" height="60">
+        </picture>
+      </a>
 
-<div class="filters">
-  <div class="w">
-    <span class="flabel">Filtrer</span>
-    <button class="chip on">Tous</button>
-    <button class="chip">Concerts</button>
-    <button class="chip">Expositions</button>
-    <button class="chip">Spectacles</button>
-    <button class="chip">Cinema</button>
-    <button class="chip">Danse</button>
-    <button class="chip">Ateliers</button>
-    <div class="sep"></div>
-    <button class="chip">Gratuit</button>
-    <button class="chip">Acces PMR</button>
-  </div>
-</div>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Ouvrir le menu de navigation">
+        <span></span><span></span><span></span>
+      </button>
 
-<main>
-  <div class="sh">
-    <div>
-      <h2>A l'affiche cette semaine</h2>
-      <p class="ct">24 evenements trouves</p>
-    </div>
-  </div>
-
-  <article class="featured">
-    <div class="fbadge">A LA UNE</div>
-    <div>
-      <div>
-        <span class="fcat">Concert</span>
-        <span class="fdate">Vendredi 14 juin 2025 · 20h30</span>
-      </div>
-      <h3>Nuit des Etoiles —<br>Orchestre Philharmonique</h3>
-      <p>Une soiree exceptionnelle sous les etoiles avec l'Orchestre Philharmonique de VilleNova. Au programme : Debussy, Ravel et une creation mondiale.</p>
-      <div class="finfo">
-        <span>Parc de la Liberte</span>
-        <span>Duree : 2h15</span>
-        <span>Des 8 ans · Acces PMR</span>
-      </div>
-      <div class="fbtns">
-        <button class="btn-p">Voir les details</button>
-        <button class="btn-g">Reserver — 18 €</button>
-      </div>
-    </div>
-    <div class="fimg">
-      <span>Photo de l'evenement</span>
-    </div>
-  </article>
-
-  <div class="grid">
-
-    <article class="card">
-      <div class="cimg">
-        <span>Image</span>
-        <span class="cbadge">Exposition</span>
-        <button class="cfav">&#9825;</button>
-      </div>
-      <div class="cbody">
-        <p class="cdate">Sam. 8 juin — Dim. 30 juin</p>
-        <h3>Lumieres du Monde — Art Contemporain</h3>
-        <p class="clieu">Musee d'Art Moderne</p>
-      </div>
-      <div class="cfoot">
-        <span class="free">Gratuit</span>
-        <button class="btn-b">En savoir plus</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="cimg">
-        <span>Image</span>
-        <span class="cbadge">Theatre</span>
-        <button class="cfav">&#9825;</button>
-      </div>
-      <div class="cbody">
-        <p class="cdate">Jeu. 12 juin · 19h00</p>
-        <h3>Hamlet — Compagnie du Soleil Levant</h3>
-        <p class="clieu">Theatre du Palais</p>
-      </div>
-      <div class="cfoot">
-        <span class="price">22 €</span>
-        <button class="btn-b">Reserver</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="cimg">
-        <span>Image</span>
-        <span class="cbadge">Concert</span>
-        <button class="cfav">&#9825;</button>
-      </div>
-      <div class="cbody">
-        <p class="cdate">Dim. 15 juin · 17h00</p>
-        <h3>Jazz en Plein Air — Sunset Sessions</h3>
-        <p class="clieu">Esplanade du Port</p>
-      </div>
-      <div class="cfoot">
-        <span class="free">Gratuit</span>
-        <button class="btn-b">En savoir plus</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="cimg">
-        <span>Image</span>
-        <span class="cbadge">Cinema</span>
-        <button class="cfav">&#9825;</button>
-      </div>
-      <div class="cbody">
-        <p class="cdate">Mar. 17 juin · 21h30</p>
-        <h3>Cine Plein Air — Retrospective Truffaut</h3>
-        <p class="clieu">Jardin des Arts</p>
-      </div>
-      <div class="cfoot">
-        <span class="price">8 €</span>
-        <button class="btn-b">Reserver</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="cimg">
-        <span>Image</span>
-        <span class="cbadge">Danse</span>
-        <button class="cfav">&#9825;</button>
-      </div>
-      <div class="cbody">
-        <p class="cdate">Ven. 20 juin · 20h00</p>
-        <h3>Ballet Contemporain — Corps en Mouvement</h3>
-        <p class="clieu">Centre Choregraphique</p>
-      </div>
-      <div class="cfoot">
-        <span class="price">15 €</span>
-        <button class="btn-b">Reserver</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="cimg">
-        <span>Image</span>
-        <span class="cbadge">Atelier</span>
-        <button class="cfav">&#9825;</button>
-      </div>
-      <div class="cbody">
-        <p class="cdate">Sam. 21 juin · 14h00</p>
-        <h3>Atelier Serigraphie — Initiation Tout Public</h3>
-        <p class="clieu">Fabrique Culturelle</p>
-      </div>
-      <div class="cfoot">
-        <span class="free">Gratuit</span>
-        <button class="btn-b">S'inscrire</button>
-      </div>
-    </article>
-
-  </div>
-
-  <div class="more">
-    <button class="btn-l">Voir plus d'evenements (18 restants)</button>
-  </div>
-</main>
-
-<section class="newsletter">
-  <div class="w">
-    <div>
-      <h2>Ne manquez plus rien.</h2>
-      <p>Recevez chaque semaine notre selection d'evenements culturels.</p>
-    </div>
-    <div class="nform">
-      <input type="email" placeholder="votre@email.fr">
-      <button>S'inscrire</button>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="w">
-    <div class="brand">
-      <span class="logo">Ville<span>Nova</span></span>
-      <p>La plateforme culturelle officielle de VilleNova.</p>
-    </div>
-    <div>
-      <h4>Explorer</h4>
-      <ul>
-        <li><a href="#">Tous les evenements</a></li>
-        <li><a href="#">Carte interactive</a></li>
-        <li><a href="#">Lieux culturels</a></li>
-        <li><a href="#">Artistes locaux</a></li>
+      <ul id="nav-menu" role="list">
+        <li><a href="index.html" aria-current="page">Agenda</a></li>
+        <li><a href="#">Carte</a></li>
+        <li><a href="#">Lieux</a></li>
+        <li><a href="#">A propos</a></li>
+        <li><a href="#" class="nav-cta">Mes favoris</a></li>
       </ul>
-    </div>
-    <div>
-      <h4>Pratique</h4>
-      <ul>
-        <li><a href="#">Accessibilite</a></li>
-        <li><a href="#">Tarifs solidaires</a></li>
-        <li><a href="#">Pass culture</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>La ville</h4>
-      <ul>
-        <li><a href="#">VilleNova.fr</a></li>
-        <li><a href="#">Politique culturelle</a></li>
-        <li><a href="#">Soumettre un evenement</a></li>
-        <li><a href="#">Presse</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="fbot">
-    <span>© 2025 Mairie de VilleNova</span>
-    <div>
-      <a href="#">Mentions legales</a>
-      <a href="#">Confidentialite</a>
-      <a href="#">Accessibilite</a>
-    </div>
-  </div>
-</footer>
 
-<script src="script.js"></script>
+    </div>
+  </nav>
+
+  <!-- HERO  -->
+  <header class="hero" role="banner">
+    <div class="w">
+      <h1>La culture de <em>VilleNova</em>, pour tous.</h1>
+      <p class="hero-sub">
+        Concerts, expositions, spectacles — decouvrez l'agenda culturel de votre ville, centralise et accessible.
+      </p>
+
+      <!-- Research Formular -->
+      <form class="search" role="search" action="#" method="get">
+        <label for="recherche" class="sr-only">Rechercher un evenement</label>
+        <input
+          id="recherche"
+          type="search"
+          name="q"
+          placeholder="Concert, exposition, theatre..."
+          autocomplete="off"
+          aria-label="Rechercher un evenement culturel"
+        >
+        <label for="date-filtre" class="sr-only">Filtrer par date</label>
+        <select id="date-filtre" name="date" aria-label="Choisir une periode">
+          <option value="">Toutes les dates</option>
+          <option value="weekend">Ce week-end</option>
+          <option value="semaine">Cette semaine</option>
+          <option value="mois">Ce mois-ci</option>
+        </select>
+        <button type="submit" aria-label="Lancer la recherche">Rechercher</button>
+      </form>
+
+      <!-- Key figures -->
+      <div class="hero-stats" aria-label="Chiffres cles de VilleNova">
+        <div class="stat">
+          <strong>128</strong>
+          <span>evenements ce mois</span>
+        </div>
+        <div class="stat">
+          <strong>34</strong>
+          <span>lieux culturels</span>
+        </div>
+        <div class="stat">
+          <strong>42%</strong>
+          <span>entree gratuite</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!--  Filters -->
+  <section class="filters" aria-label="Filtrer les evenements par categorie">
+    <div class="w">
+      <span class="flabel" aria-hidden="true">Filtrer</span>
+      <div class="chips" role="group" aria-label="Categories d'evenements">
+        <button class="chip on" aria-pressed="true" data-filter="tous">Tous</button>
+        <button class="chip" aria-pressed="false" data-filter="concerts">Concerts</button>
+        <button class="chip" aria-pressed="false" data-filter="expositions">Expositions</button>
+        <button class="chip" aria-pressed="false" data-filter="spectacles">Spectacles</button>
+        <button class="chip" aria-pressed="false" data-filter="cinema">Cinema</button>
+        <button class="chip" aria-pressed="false" data-filter="danse">Danse</button>
+        <button class="chip" aria-pressed="false" data-filter="ateliers">Ateliers</button>
+        <div class="sep" aria-hidden="true"></div>
+        <button class="chip" aria-pressed="false" data-filter="gratuit">Gratuit</button>
+        <button class="chip" aria-pressed="false" data-filter="pmr">Acces PMR</button>
+      </div>
+    </div>
+  </section>
+
+  <!--  PRINCIPAL CONTENT  -->
+  <main id="contenu-principal">
+    <div class="w">
+
+      <div class="section-head">
+        <div>
+          <h2>A l'affiche cette semaine</h2>
+          <p class="count" aria-live="polite" aria-atomic="true">
+            <span id="nb-resultats">24</span> evenements trouves
+          </p>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading" class="loading" role="status" aria-live="polite" aria-label="Chargement des evenements" hidden>
+        <span>Chargement en cours...</span>
+      </div>
+
+      <div id="annonce" role="status" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+      <!-- Event -->
+      <article class="featured" aria-labelledby="vedette-titre">
+        <span class="fbadge" aria-label="Evenement a la une">A LA UNE</span>
+        <div class="featured-content">
+          <div class="featured-meta">
+            <span class="fcat">Concert</span>
+            <time class="fdate" datetime="2025-06-14T20:30">Vendredi 14 juin 2025 a 20h30</time>
+          </div>
+          <h3 id="vedette-titre">Nuit des Etoiles — Orchestre Philharmonique</h3>
+          <p>
+            Une soiree exceptionnelle sous les etoiles avec l'Orchestre Philharmonique de VilleNova.
+            Au programme : Debussy, Ravel et une creation mondiale du compositeur local Marc Aubert.
+          </p>
+          <ul class="featured-infos" aria-label="Informations pratiques">
+            <li>Parc de la Liberte</li>
+            <li>Duree : 2h15 avec entracte</li>
+            <li>Des 8 ans</li>
+            <li>Acces PMR</li>
+          </ul>
+          <div class="featured-btns">
+            <a href="event-detail.html?id=1" class="btn-p">Voir les details</a>
+            <a href="#reserver-1" class="btn-g">Reserver — 18 €</a>
+          </div>
+        </div>
+        <div class="featured-img">
+          <picture>
+            <source
+              media="(min-width: 768px)"
+              srcset="VilleNova.webp"
+              type="image/webp"
+            >
+            <img
+              src="VilleNova.webp"
+              alt="Affiche de la Nuit des Etoiles — Orchestre Philharmonique de VilleNova"
+              width="400"
+              height="220"
+              loading="eager"
+            >
+          </picture>
+        </div>
+      </article>
+
+      <!-- Events Grid -->
+      <section aria-labelledby="titre-grille">
+        <h2 id="titre-grille" class="sr-only">Liste des evenements</h2>
+
+        <div id="events-grid" class="grid">
+
+          <article class="card" data-categorie="expositions">
+            <div class="card-img">
+              <picture>
+                <source srcset="https://placehold.co/392x150/3D1A5C/fff?text=Exposition" type="image/webp">
+                <img
+                  src="https://placehold.co/392x150/3D1A5C/fff?text=Exposition"
+                  alt="Affiche de l'exposition Lumieres du Monde"
+                  width="392"
+                  height="150"
+                  loading="lazy"
+                >
+              </picture>
+              <span class="cbadge" aria-label="Categorie : Exposition">Exposition</span>
+              <button class="cfav" aria-pressed="false" aria-label="Ajouter Lumieres du Monde aux favoris">&#9825;</button>
+            </div>
+            <div class="card-body">
+              <p class="cdate">
+                <time datetime="2025-06-08">Sam. 8 juin</time> — <time datetime="2025-06-30">Dim. 30 juin</time>
+              </p>
+              <h3>Lumieres du Monde — Art Contemporain</h3>
+              <address class="clieu" aria-label="Lieu">Musee d'Art Moderne</address>
+            </div>
+            <div class="card-footer">
+              <span class="free" aria-label="Entree gratuite">Gratuit</span>
+              <a href="event-detail.html?id=2" class="btn-b">En savoir plus</a>
+            </div>
+          </article>
+
+          <article class="card" data-categorie="spectacles">
+            <div class="card-img">
+              <picture>
+                <source srcset="https://placehold.co/392x150/5C1A2D/fff?text=Theatre" type="image/webp">
+                <img
+                  src="https://placehold.co/392x150/5C1A2D/fff?text=Theatre"
+                  alt="Affiche de la piece Hamlet"
+                  width="392"
+                  height="150"
+                  loading="lazy"
+                >
+              </picture>
+              <span class="cbadge" aria-label="Categorie : Theatre">Theatre</span>
+              <button class="cfav" aria-pressed="false" aria-label="Ajouter Hamlet aux favoris">&#9825;</button>
+            </div>
+            <div class="card-body">
+              <p class="cdate"><time datetime="2025-06-12T19:00">Jeu. 12 juin a 19h00</time></p>
+              <h3>Hamlet — Compagnie du Soleil Levant</h3>
+              <address class="clieu" aria-label="Lieu">Theatre du Palais</address>
+            </div>
+            <div class="card-footer">
+              <span class="price" aria-label="Tarif : 22 euros">22 €</span>
+              <a href="event-detail.html?id=3" class="btn-b">Reserver</a>
+            </div>
+          </article>
+
+          <article class="card" data-categorie="concerts">
+            <div class="card-img">
+              <picture>
+                <source srcset="https://placehold.co/392x150/1A3A5C/fff?text=Concert" type="image/webp">
+                <img
+                  src="https://placehold.co/392x150/1A3A5C/fff?text=Concert"
+                  alt="Affiche du concert Jazz en Plein Air"
+                  width="392"
+                  height="150"
+                  loading="lazy"
+                >
+              </picture>
+              <span class="cbadge" aria-label="Categorie : Concert">Concert</span>
+              <button class="cfav" aria-pressed="false" aria-label="Ajouter Jazz en Plein Air aux favoris">&#9825;</button>
+            </div>
+            <div class="card-body">
+              <p class="cdate"><time datetime="2025-06-15T17:00">Dim. 15 juin a 17h00</time></p>
+              <h3>Jazz en Plein Air — Sunset Sessions</h3>
+              <address class="clieu" aria-label="Lieu">Esplanade du Port</address>
+            </div>
+            <div class="card-footer">
+              <span class="free" aria-label="Entree gratuite">Gratuit</span>
+              <a href="event-detail.html?id=4" class="btn-b">En savoir plus</a>
+            </div>
+          </article>
+
+          <article class="card" data-categorie="cinema">
+            <div class="card-img">
+              <picture>
+                <source srcset="https://placehold.co/392x150/1A4D5C/fff?text=Cinema" type="image/webp">
+                <img
+                  src="https://placehold.co/392x150/1A4D5C/fff?text=Cinema"
+                  alt="Affiche du Cine Plein Air Retrospective Truffaut"
+                  width="392"
+                  height="150"
+                  loading="lazy"
+                >
+              </picture>
+              <span class="cbadge" aria-label="Categorie : Cinema">Cinema</span>
+              <button class="cfav" aria-pressed="false" aria-label="Ajouter Cine Plein Air aux favoris">&#9825;</button>
+            </div>
+            <div class="card-body">
+              <p class="cdate"><time datetime="2025-06-17T21:30">Mar. 17 juin a 21h30</time></p>
+              <h3>Cine Plein Air — Retrospective Truffaut</h3>
+              <address class="clieu" aria-label="Lieu">Jardin des Arts</address>
+            </div>
+            <div class="card-footer">
+              <span class="price" aria-label="Tarif : 8 euros">8 €</span>
+              <a href="event-detail.html?id=5" class="btn-b">Reserver</a>
+            </div>
+          </article>
+
+          <article class="card" data-categorie="danse">
+            <div class="card-img">
+              <picture>
+                <source srcset="https://placehold.co/392x150/5C3A1A/fff?text=Danse" type="image/webp">
+                <img
+                  src="https://placehold.co/392x150/5C3A1A/fff?text=Danse"
+                  alt="Affiche du spectacle Ballet Contemporain"
+                  width="392"
+                  height="150"
+                  loading="lazy"
+                >
+              </picture>
+              <span class="cbadge" aria-label="Categorie : Danse">Danse</span>
+              <button class="cfav" aria-pressed="false" aria-label="Ajouter Ballet Contemporain aux favoris">&#9825;</button>
+            </div>
+            <div class="card-body">
+              <p class="cdate"><time datetime="2025-06-20T20:00">Ven. 20 juin a 20h00</time></p>
+              <h3>Ballet Contemporain — Corps en Mouvement</h3>
+              <address class="clieu" aria-label="Lieu">Centre Choregraphique</address>
+            </div>
+            <div class="card-footer">
+              <span class="price" aria-label="Tarif : 15 euros">15 €</span>
+              <a href="event-detail.html?id=6" class="btn-b">Reserver</a>
+            </div>
+          </article>
+
+          <article class="card" data-categorie="ateliers">
+            <div class="card-img">
+              <picture>
+                <source srcset="https://placehold.co/392x150/1A5C2D/fff?text=Atelier" type="image/webp">
+                <img
+                  src="https://placehold.co/392x150/1A5C2D/fff?text=Atelier"
+                  alt="Affiche de l'atelier Serigraphie Initiation"
+                  width="392"
+                  height="150"
+                  loading="lazy"
+                >
+              </picture>
+              <span class="cbadge" aria-label="Categorie : Atelier">Atelier</span>
+              <button class="cfav" aria-pressed="false" aria-label="Ajouter Atelier Serigraphie aux favoris">&#9825;</button>
+            </div>
+            <div class="card-body">
+              <p class="cdate"><time datetime="2025-06-21T14:00">Sam. 21 juin a 14h00</time></p>
+              <h3>Atelier Serigraphie — Initiation Tout Public</h3>
+              <address class="clieu" aria-label="Lieu">Fabrique Culturelle</address>
+            </div>
+            <div class="card-footer">
+              <span class="free" aria-label="Entree gratuite">Gratuit</span>
+              <a href="event-detail.html?id=7" class="btn-b">S'inscrire</a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- More Events -->
+      <div class="more">
+        <button id="btn-load-more" class="btn-l" aria-label="Charger 12 evenements supplementaires">
+          Voir plus d'evenements <span id="restants">(18 restants)</span>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter" aria-labelledby="newsletter-titre">
+    <div class="w">
+      <div class="newsletter-text">
+        <h2 id="newsletter-titre">Ne manquez plus rien.</h2>
+        <p>Recevez chaque semaine notre selection d'evenements culturels directement dans votre boite mail.</p>
+      </div>
+      <form class="nform" action="#" method="post" aria-label="Inscription a la newsletter">
+        <label for="email-newsletter" class="sr-only">Votre adresse email</label>
+        <input
+          id="email-newsletter"
+          type="email"
+          name="email"
+          placeholder="votre@email.fr"
+          autocomplete="email"
+          required
+          aria-required="true"
+          aria-describedby="email-aide"
+        >
+        <span id="email-aide" class="sr-only">Saisissez votre adresse email pour vous inscrire a la newsletter.</span>
+        <button type="submit">S'inscrire</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <div class="w">
+
+      <div class="brand">
+        <a href="index.html" aria-label="VilleNova — Retour a l'accueil">
+          <picture>
+            <source srcset="VilleNova.webp" type="image/webp">
+            <img src="VilleNova.webp" alt="VilleNova" width="140" height="46" loading="lazy">
+          </picture>
+        </a>
+        <p>La plateforme culturelle officielle de VilleNova — centralisee, accessible et inclusive.</p>
+        <p class="eco-label" aria-label="Site eco-responsable heberge en France">
+          Site eco-responsable · Heberge en France
+        </p>
+      </div>
+
+
+    </div>
+
+    <div class="footer-bottom">
+      <div class="w">
+        <small>© 2025 Mairie de VilleNova — Tous droits reserves</small>
+        <nav aria-label="Liens legaux">
+          <a href="#">Mentions legales</a>
+          <a href="#">Confidentialite</a>
+          <a href="#" aria-label="Declaration d'accessibilite RGAA niveau AA">Accessibilite</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
