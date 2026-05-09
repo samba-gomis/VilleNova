@@ -1,10 +1,9 @@
 'use strict';
 
 /* ---- CONFIGURATION API ---- */
-const API_KEY    = '3b11dfefd4d04ebc81c0780b1bdc5fdf'; 
+const API_KEY    = '09fb77f6b09e4997b3132dcecdc78db0'; 
 const AGENDA_ID  = '9571344';
-const API_URL    = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=12`;
-
+const API_URL = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=12`;
 /* Mobile Menu */
 (function initMenu() {
   var toggle = document.querySelector('.nav-toggle');
@@ -28,7 +27,7 @@ const API_URL    = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?ke
 
 /* Category chips */
 (function initFiltres() {
-  var chips  = document.querySelectorAll('.chip');
+  var chips   = document.querySelectorAll('.chip');
   var annonce = document.getElementById('annonce');
 
   chips.forEach(function (chip) {
@@ -66,7 +65,7 @@ const API_URL    = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?ke
       }
     });
 
-    // Upload meter of results
+    // Update results counter
     var compteur = document.getElementById('nb-resultats');
     if (compteur) {
       compteur.textContent = nb;
@@ -100,7 +99,7 @@ const API_URL    = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?ke
   });
 }());
 
-/*  CONNEXION API OPENAGENDA */
+/* CONNEXION API OPENAGENDA */
 async function fetchEvenements() {
   var loading = document.getElementById('loading');
   var grid    = document.getElementById('events-grid');
@@ -118,8 +117,8 @@ async function fetchEvenements() {
       throw new Error('Erreur reseau : ' + response.status);
     }
 
-    var data     = await response.json();
-    var events   = data.events;
+    var data   = await response.json();
+    var events = data.events;
 
     // Reinitialize the grid before adding new cards
     grid.innerHTML = '';
@@ -151,15 +150,29 @@ async function fetchEvenements() {
 
 /* Create Event Card with API Data */
 function creerCarte(event) {
-  var titre    = (event.title && event.title.fr)       || 'Evenement sans titre';
-  var lieu     = (event.location && event.location.name) || '';
+  var titre     = (event.title && event.title.fr)         || 'Evenement sans titre';
+  var lieu      = (event.location && event.location.name) || '';
   var dateDebut = event.firstTiming && event.firstTiming.begin
     ? new Date(event.firstTiming.begin).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })
     : '';
-  var image    = (event.image && event.image.base)     || null;
-  var cat      = (event.keywords && event.keywords.fr && event.keywords.fr[0]) || 'Evenement';
-  var gratuit  = event.registration && event.registration.some(function (r) { return r.price && r.price === 0; });
-  var prix     = !gratuit && event.registration && event.registration[0] && event.registration[0].price
+
+  // CORRECTION : OpenAgenda peut renvoyer l'image sous plusieurs formats
+  var image = null;
+  if (event.image) {
+    if (typeof event.image === 'string') {
+      image = event.image;                                               // URL directe
+    } else if (event.image.base) {
+      image = event.image.base;                                          // Format { base: "url" }
+    } else if (event.image.filename) {
+      image = 'https://cibul.s3.amazonaws.com/' + event.image.filename; // Format S3
+    } else if (event.image.url) {
+      image = event.image.url;                                           // Format { url: "..." }
+    }
+  }
+
+  var cat     = (event.keywords && event.keywords.fr && event.keywords.fr[0]) || 'Evenement';
+  var gratuit = event.registration && event.registration.some(function (r) { return r.price && r.price === 0; });
+  var prix    = !gratuit && event.registration && event.registration[0] && event.registration[0].price
     ? event.registration[0].price + ' €'
     : null;
 
@@ -173,12 +186,12 @@ function creerCarte(event) {
 
   if (image) {
     var picture = document.createElement('picture');
-    var img = document.createElement('img');
-    img.src     = image;
-    img.alt     = 'Affiche de ' + titre;
-    img.width   = 392;
-    img.height  = 150;
-    img.loading = 'lazy';
+    var img     = document.createElement('img');
+    img.src          = image;
+    img.alt          = 'Affiche de ' + titre;
+    img.width        = 392;
+    img.height       = 150;
+    img.loading      = 'lazy';
     img.style.width      = '100%';
     img.style.height     = '100%';
     img.style.objectFit  = 'cover';
@@ -245,7 +258,7 @@ function creerCarte(event) {
   }
 
   var lienDetail = document.createElement('a');
-  lienDetail.href = 'event-detail.html?id=' + event.uid;
+  lienDetail.href      = 'event-detail.html?id=' + event.uid;
   lienDetail.className = 'btn-b';
   lienDetail.textContent = gratuit ? 'En savoir plus' : 'Reserver';
   footer.appendChild(lienDetail);
@@ -307,5 +320,5 @@ function afficherErreur(message, conteneur) {
 }());
 
 document.addEventListener('DOMContentLoaded', function () {
-   fetchEvenements();
+  fetchEvenements();
 });

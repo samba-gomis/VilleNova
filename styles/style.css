@@ -1,0 +1,21 @@
+body {
+  font-family: "DM Sans", sans-serif;
+  color: #1A3A5C;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1A3A5C;
+  color: #FFFFFF;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.header {
+  background: #E8501A;
+  padding: 20px;
+}
+
+/*# sourceMappingURL=style.css.map */
