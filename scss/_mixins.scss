@@ -1,6 +1,24 @@
-// Mixins Sass
-@mixin flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@use 'variables' as *;
+// Breakpoints Mobile First
+@mixin bp($p) {
+  @if $p == sm { @media (min-width: $sm) { @content; } }
+  @if $p == md { @media (min-width: $md) { @content; } }
+  @if $p == lg { @media (min-width: $lg) { @content; } }
+}
+
+// Bouton rempli
+@mixin btn($bg, $color: $white) {
+  display: inline-block;
+  background: $bg;
+  color: $color;
+  border: none;
+  border-radius: 5px;
+  padding: .7rem 1.4rem;
+  font-family: $font-title;
+  font-weight: 700;
+  font-size: .9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .2s;
+  &:hover { background: darken($bg, 8%); color: $color; }
 }

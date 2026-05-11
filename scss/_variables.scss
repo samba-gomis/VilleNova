@@ -1,19 +1,24 @@
-// Variables Sass adaptées depuis style.css
-$primary: #1A3A5C;
+// Couleurs
+$primary:   #1A3A5C;
 $secondary: #E8501A;
-$accent: #F5C842;
-$light: #F7F5F0;
-$dark: #1C1C1C;
-$gray: #4B5563;
-$gray-light: #6B7280;
-$border: #D1CEC6;
-$white: #FFFFFF;
-$green: #15803D;
-$green-bg: #DCFCE7;
+$accent:    #F5C842;
+$light:     #F7F5F0;
+$dark:      #1C1C1C;
+$gray:      #6B7280;
+$border:    #D1CEC6;
+$white:     #FFFFFF;
+$green:     #15803D;
+$green-bg:  #DCFCE7;
 
+// Typo
 $font-title: 'Syne', sans-serif;
-$font-body: 'DM Sans', sans-serif;
+$font-body:  'DM Sans', sans-serif;
 
-$space-xs: 0.5rem;
-$space-sm: 1rem;
-$space-md: 1.5rem;
+// Layout
+$max-w:    1200px;
+$nav-h:    64px;
+
+// Breakpoints
+$sm: 480px;
+$md: 768px;
+$lg: 1024px;

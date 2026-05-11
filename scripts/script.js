@@ -1,324 +1,137 @@
 'use strict';
 
-/* ---- CONFIGURATION API ---- */
-const API_KEY    = '09fb77f6b09e4997b3132dcecdc78db0'; 
-const AGENDA_ID  = '9571344';
-const API_URL = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=12`;
-/* Mobile Menu */
-(function initMenu() {
-  var toggle = document.querySelector('.nav-toggle');
-  var menu   = document.getElementById('nav-menu');
+const API_KEY   = '3a0c95fcb5fa426fb34f9a49557dbc07';
+const AGENDA_ID = '9571344';
+const LIMIT     = 12;
+let offset      = 0;
+let total       = 0;
 
-  if (!toggle || !menu) return;
+/* ---- MENU MOBILE ---- */
+const toggle = document.querySelector('.nav-toggle');
+const menu   = document.getElementById('nav-menu');
 
-  toggle.addEventListener('click', function () {
-    var isOpen = menu.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', String(isOpen));
-  });
+toggle.addEventListener('click', () => {
+  const open = menu.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', open);
+});
 
-  // Close menu when clicking outside
-  document.addEventListener('click', function (e) {
-    if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-      menu.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-    }
-  });
-}());
-
-/* Category chips */
-(function initFiltres() {
-  var chips   = document.querySelectorAll('.chip');
-  var annonce = document.getElementById('annonce');
-
-  chips.forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      // Disactive all chips
-      chips.forEach(function (c) {
-        c.classList.remove('on');
-        c.setAttribute('aria-pressed', 'false');
-      });
-
-      // Active chip when clicked
-      chip.classList.add('on');
-      chip.setAttribute('aria-pressed', 'true');
-
-      var filtre = chip.dataset.filter;
-      filtrerEvenements(filtre);
-
-      // Screen announcer
-      if (annonce) {
-        annonce.textContent = 'Filtre applique : ' + chip.textContent.trim();
-      }
-    });
-  });
-
-  function filtrerEvenements(filtre) {
-    var cartes = document.querySelectorAll('#events-grid .card');
-    var nb = 0;
-
-    cartes.forEach(function (carte) {
-      if (filtre === 'tous' || carte.dataset.categorie === filtre) {
-        carte.hidden = false;
-        nb++;
-      } else {
-        carte.hidden = true;
-      }
-    });
-
-    // Update results counter
-    var compteur = document.getElementById('nb-resultats');
-    if (compteur) {
-      compteur.textContent = nb;
-    }
+document.addEventListener('click', e => {
+  if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+    menu.classList.remove('open');
+    toggle.setAttribute('aria-expanded', false);
   }
-}());
+});
 
-/* Favorite Buttons */
-(function initFavoris() {
-  var grid = document.getElementById('events-grid');
-  if (!grid) return;
+/* ---- FILTRES ---- */
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(c => {
+      c.classList.remove('on');
+      c.setAttribute('aria-pressed', false);
+    });
+    chip.classList.add('on');
+    chip.setAttribute('aria-pressed', true);
 
-  grid.addEventListener('click', function (e) {
-    var btn = e.target.closest('.cfav');
-    if (!btn) return;
+    const filtre = chip.dataset.filter;
+    document.querySelectorAll('.card').forEach(card => {
+      card.hidden = filtre !== 'tous' && card.dataset.cat !== filtre;
+    });
 
-    var actif = btn.getAttribute('aria-pressed') === 'true';
-    var titre = btn.getAttribute('aria-label').replace('Ajouter ', '').replace(' aux favoris', '');
-
-    if (actif) {
-      btn.setAttribute('aria-pressed', 'false');
-      btn.innerHTML = '&#9825;';
-      btn.style.color = '';
-      btn.setAttribute('aria-label', 'Ajouter ' + titre + ' aux favoris');
-    } else {
-      btn.setAttribute('aria-pressed', 'true');
-      btn.innerHTML = '&#9829;';
-      btn.style.color = '#E8501A';
-      btn.setAttribute('aria-label', 'Retirer ' + titre + ' des favoris');
-    }
+    const nb = document.querySelectorAll('.card:not([hidden])').length;
+    document.getElementById('compteur').textContent = nb;
+    document.getElementById('annonce').textContent  = nb + ' evenements pour : ' + chip.textContent;
   });
-}());
+});
 
-/* CONNEXION API OPENAGENDA */
-async function fetchEvenements() {
-  var loading = document.getElementById('loading');
-  var grid    = document.getElementById('events-grid');
-  var annonce = document.getElementById('annonce');
+/* ---- FAVORIS ---- */
+document.getElementById('events-grid').addEventListener('click', e => {
+  const btn = e.target.closest('.cfav');
+  if (!btn) return;
+  const on = btn.getAttribute('aria-pressed') === 'true';
+  btn.setAttribute('aria-pressed', !on);
+  btn.innerHTML  = on ? '&#9825;' : '&#9829;';
+  btn.style.color = on ? '' : '#E8501A';
+});
 
-  if (!grid) return;
+/* ---- API OPENAGENDA ---- */
+async function charger(off) {
+  const loading = document.getElementById('loading');
+  const grid    = document.getElementById('events-grid');
 
-  if (loading) loading.hidden = false;
-  if (annonce) annonce.textContent = 'Chargement des evenements en cours...';
+  loading.hidden = false;
 
   try {
-    var response = await fetch(API_URL);
+    const res  = await fetch(`https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=${LIMIT}&offset=${off}`);
+    const data = await res.json();
+    total      = data.total || 0;
 
-    if (!response.ok) {
-      throw new Error('Erreur reseau : ' + response.status);
-    }
+    if (off === 0) grid.innerHTML = '';
 
-    var data   = await response.json();
-    var events = data.events;
+    (data.events || []).forEach(e => grid.appendChild(creerCarte(e)));
 
-    // Reinitialize the grid before adding new cards
-    grid.innerHTML = '';
+    const nb = grid.querySelectorAll('.card').length;
+    document.getElementById('nb-resultats').textContent = total;
+    document.getElementById('compteur').textContent     = nb;
 
-    if (!events || events.length === 0) {
-      afficherErreur('Aucun evenement disponible pour le moment.', grid);
-      return;
-    }
+    const btnMore = document.getElementById('btn-more');
+    btnMore.hidden = nb >= total;
 
-    events.forEach(function (event) {
-      var carte = creerCarte(event);
-      grid.appendChild(carte);
-    });
-
-    var compteur = document.getElementById('nb-resultats');
-    if (compteur) compteur.textContent = events.length;
-
-    if (annonce) {
-      annonce.textContent = events.length + ' evenements charges.';
-    }
-
-  } catch (err) {
-    console.error('Erreur API OpenAgenda :', err);
-    afficherErreur('Impossible de charger les evenements. Veuillez reessayer.', grid);
+  } catch {
+    grid.innerHTML = '<p role="alert" style="color:#DC2626;padding:2rem;grid-column:1/-1">Impossible de charger les evenements.</p>';
   } finally {
-    if (loading) loading.hidden = true;
+    loading.hidden = true;
   }
 }
 
-/* Create Event Card with API Data */
-function creerCarte(event) {
-  var titre     = (event.title && event.title.fr)         || 'Evenement sans titre';
-  var lieu      = (event.location && event.location.name) || '';
-  var dateDebut = event.firstTiming && event.firstTiming.begin
-    ? new Date(event.firstTiming.begin).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })
+/* ---- CREER UNE CARTE ---- */
+function creerCarte(ev) {
+  const titre = ev.title?.fr || 'Sans titre';
+  const lieu  = ev.location?.name || '';
+  const date  = ev.firstTiming?.begin
+    ? new Date(ev.firstTiming.begin).toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' })
     : '';
+  const cat   = ev.keywords?.fr?.[0] || 'evenement';
 
-  // CORRECTION : OpenAgenda peut renvoyer l'image sous plusieurs formats
-  var image = null;
-  if (event.image) {
-    if (typeof event.image === 'string') {
-      image = event.image;                                               // URL directe
-    } else if (event.image.base) {
-      image = event.image.base;                                          // Format { base: "url" }
-    } else if (event.image.filename) {
-      image = 'https://cibul.s3.amazonaws.com/' + event.image.filename; // Format S3
-    } else if (event.image.url) {
-      image = event.image.url;                                           // Format { url: "..." }
-    }
+  let image = null;
+  if (ev.image) {
+    if (typeof ev.image === 'string') image = ev.image;
+    else if (ev.image.base)           image = ev.image.base;
+    else if (ev.image.filename)       image = 'https://cibul.s3.amazonaws.com/' + ev.image.filename;
+    else if (ev.image.url)            image = ev.image.url;
   }
 
-  var cat     = (event.keywords && event.keywords.fr && event.keywords.fr[0]) || 'Evenement';
-  var gratuit = event.registration && event.registration.some(function (r) { return r.price && r.price === 0; });
-  var prix    = !gratuit && event.registration && event.registration[0] && event.registration[0].price
-    ? event.registration[0].price + ' €'
-    : null;
+  const gratuit = ev.registration?.some(r => r.price === 0);
+  const prix    = !gratuit && ev.registration?.[0]?.price ? ev.registration[0].price + ' €' : null;
 
-  var article = document.createElement('article');
-  article.className = 'card';
-  article.dataset.categorie = cat.toLowerCase();
+  const art = document.createElement('article');
+  art.className       = 'card';
+  art.dataset.cat     = cat.toLowerCase();
 
-  // Zone image
-  var divImg = document.createElement('div');
-  divImg.className = 'card-img';
+  art.innerHTML = `
+    <div class="card-img">
+      ${image ? `<img src="${image}" alt="Affiche ${titre}" width="392" height="150" loading="lazy">` : ''}
+      <span class="cbadge">${cat}</span>
+      <button class="cfav" aria-pressed="false" aria-label="Favori ${titre}">&#9825;</button>
+    </div>
+    <div class="card-body">
+      <p class="cdate"><time>${date}</time></p>
+      <h3>${titre}</h3>
+      <address>${lieu}</address>
+    </div>
+    <div class="card-footer">
+      ${gratuit ? '<span class="free">Gratuit</span>' : prix ? `<span class="price">${prix}</span>` : '<span></span>'}
+      <a href="event-detail.html?id=${ev.uid}" class="btn-b">${gratuit ? 'En savoir plus' : 'Reserver'}</a>
+    </div>
+  `;
 
-  if (image) {
-    var picture = document.createElement('picture');
-    var img     = document.createElement('img');
-    img.src          = image;
-    img.alt          = 'Affiche de ' + titre;
-    img.width        = 392;
-    img.height       = 150;
-    img.loading      = 'lazy';
-    img.style.width      = '100%';
-    img.style.height     = '100%';
-    img.style.objectFit  = 'cover';
-    picture.appendChild(img);
-    divImg.appendChild(picture);
-  }
-
-  var badge = document.createElement('span');
-  badge.className = 'cbadge';
-  badge.textContent = cat;
-  badge.setAttribute('aria-label', 'Categorie : ' + cat);
-  divImg.appendChild(badge);
-
-  var btnFav = document.createElement('button');
-  btnFav.className = 'cfav';
-  btnFav.setAttribute('aria-pressed', 'false');
-  btnFav.setAttribute('aria-label', 'Ajouter ' + titre + ' aux favoris');
-  btnFav.innerHTML = '&#9825;';
-  divImg.appendChild(btnFav);
-
-  article.appendChild(divImg);
-
-  // Cards body
-  var body = document.createElement('div');
-  body.className = 'card-body';
-
-  var pDate = document.createElement('p');
-  pDate.className = 'cdate';
-  var time = document.createElement('time');
-  time.textContent = dateDebut;
-  pDate.appendChild(time);
-  body.appendChild(pDate);
-
-  var h3 = document.createElement('h3');
-  h3.textContent = titre;
-  body.appendChild(h3);
-
-  var addr = document.createElement('address');
-  addr.className = 'clieu';
-  addr.setAttribute('aria-label', 'Lieu');
-  addr.textContent = lieu;
-  body.appendChild(addr);
-
-  article.appendChild(body);
-
-  // Cards footer
-  var footer = document.createElement('div');
-  footer.className = 'card-footer';
-
-  if (gratuit) {
-    var spanGratuit = document.createElement('span');
-    spanGratuit.className = 'free';
-    spanGratuit.setAttribute('aria-label', 'Entree gratuite');
-    spanGratuit.textContent = 'Gratuit';
-    footer.appendChild(spanGratuit);
-  } else if (prix) {
-    var spanPrix = document.createElement('span');
-    spanPrix.className = 'price';
-    spanPrix.setAttribute('aria-label', 'Tarif : ' + prix);
-    spanPrix.textContent = prix;
-    footer.appendChild(spanPrix);
-  } else {
-    footer.appendChild(document.createElement('span'));
-  }
-
-  var lienDetail = document.createElement('a');
-  lienDetail.href      = 'event-detail.html?id=' + event.uid;
-  lienDetail.className = 'btn-b';
-  lienDetail.textContent = gratuit ? 'En savoir plus' : 'Reserver';
-  footer.appendChild(lienDetail);
-
-  article.appendChild(footer);
-
-  return article;
+  return art;
 }
 
-/* Error Message Display */
-function afficherErreur(message, conteneur) {
-  conteneur.innerHTML = '';
-  var div = document.createElement('div');
-  div.setAttribute('role', 'alert');
-  div.setAttribute('aria-live', 'assertive');
-  div.style.cssText = 'text-align:center;padding:3rem;color:#DC2626;font-size:0.95rem;grid-column:1/-1;';
-  div.textContent = message;
-  conteneur.appendChild(div);
-}
-
-/* Navigation to Event Detail */
-(function initNavigationCartes() {
-  var grid = document.getElementById('events-grid');
-  if (!grid) return;
-
-  grid.addEventListener('click', function (e) {
-    if (e.target.closest('button') || e.target.closest('a')) return;
-
-    var carte = e.target.closest('.card');
-    if (!carte) return;
-
-    var lien = carte.querySelector('a.btn-b');
-    if (lien) {
-      window.location.href = lien.href;
-    }
-  });
-
-  grid.addEventListener('keydown', function (e) {
-    if (e.key !== 'Enter') return;
-
-    var carte = e.target.closest('.card');
-    if (!carte) return;
-
-    var lien = carte.querySelector('a.btn-b');
-    if (lien) {
-      window.location.href = lien.href;
-    }
-  });
-}());
-
-/* View More Button */
-(function initVoirPlus() {
-  var btn = document.getElementById('btn-load-more');
-  if (!btn) return;
-
-  btn.addEventListener('click', function () {
-    console.log('Charger la page suivante via l\'API OpenAgenda');
-  });
-}());
-
-document.addEventListener('DOMContentLoaded', function () {
-  fetchEvenements();
+/* ---- VOIR PLUS ---- */
+document.getElementById('btn-more').addEventListener('click', () => {
+  offset += LIMIT;
+  charger(offset);
 });
+
+/* ---- INIT ---- */
+document.addEventListener('DOMContentLoaded', () => charger(0));
