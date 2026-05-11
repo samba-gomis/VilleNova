@@ -61,7 +61,7 @@ async function charger(off) {
   loading.hidden = false;
 
   try {
-    const res  = await fetch(`https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=${LIMIT}&offset=${off}`);
+    const res  = await fetch(`http://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=${LIMIT}&offset=${off}`);
     const data = await res.json();
     total      = data.total || 0;
 
@@ -94,6 +94,7 @@ function creerCarte(ev) {
 
   let image = null;
   if (ev.image) {
+    console.log('Image structure for event:', ev.title?.fr, ev.image);
     if (typeof ev.image === 'string') image = ev.image;
     else if (ev.image.base)           image = ev.image.base;
     else if (ev.image.filename)       image = 'https://cibul.s3.amazonaws.com/' + ev.image.filename;
