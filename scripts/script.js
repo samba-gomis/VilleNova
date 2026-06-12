@@ -145,7 +145,10 @@ function creerCarte(ev) {
   const date  = ev.firstTiming?.begin
     ? new Date(ev.firstTiming.begin).toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' })
     : '';
-  const cat   = ev.keywords?.fr?.[0] || 'evenement';
+  const cat   = (ev.keywords?.fr?.[0] || 'evenement')
+    .toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/s$/, '');
 
   let image = null;
   if (ev.image) {
