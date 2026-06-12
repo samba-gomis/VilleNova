@@ -62,24 +62,24 @@ function paramsDate() {
   let gte, lte;
 
   if (filtre === 'weekend') {
-    const day = now.getDay();
+    const day = now.getDay(); // 0=dim, 6=sam
     const sam = new Date(now);
-    if (day === 0) sam.setDate(now.getDate() - 1);
-    else           sam.setDate(now.getDate() + (6 - day));
+    // Si on est sam(6) : aujourd'hui, si dim(0) : aujourd'hui, sinon : prochain sam
+    const joursAvantSam = day === 6 ? 0 : day === 0 ? 0 : (6 - day);
+    sam.setDate(now.getDate() + joursAvantSam);
     sam.setHours(0, 0, 0, 0);
     const dim = new Date(sam);
-    dim.setDate(sam.getDate() + 1);
+    // Si on est dim, le week-end c'est aujourd'hui seulement ; sinon sam+dim
+    dim.setDate(sam.getDate() + (day === 0 ? 0 : 1));
     dim.setHours(23, 59, 59, 999);
     gte = sam; lte = dim;
   } else if (filtre === 'semaine') {
-    gte = new Date(now);
-    gte.setDate(now.getDate() - ((now.getDay() + 6) % 7));
-    gte.setHours(0, 0, 0, 0);
-    lte = new Date(gte);
-    lte.setDate(gte.getDate() + 6);
-    lte.setHours(23, 59, 59, 999);
+    // Aujourd'hui → dans 7 jours
+    gte = new Date(now); gte.setHours(0, 0, 0, 0);
+    lte = new Date(now); lte.setDate(now.getDate() + 7); lte.setHours(23, 59, 59, 999);
   } else if (filtre === 'mois') {
-    gte = new Date(now.getFullYear(), now.getMonth(), 1);
+    // Aujourd'hui → fin du mois en cours
+    gte = new Date(now); gte.setHours(0, 0, 0, 0);
     lte = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
   }
 
