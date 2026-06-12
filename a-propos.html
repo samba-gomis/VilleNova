@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VilleNova — Découvrez notre mission : rendre la culture accessible à tous dans une ville moderne, inclusive et éco-responsable.">
+  <title>À propos — VilleNova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image" href="images/VilleNova.webp">
+  <link rel="stylesheet" href="styles/style.css">
+  <style>
+    .about-section {
+      padding: 4rem 1rem;
+    }
+    .about-section + .about-section {
+      padding-top: 0;
+    }
+    .about-lead {
+      max-width: 720px;
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      line-height: 1.8;
+      color: #1C1C1C;
+    }
+    .about-lead strong {
+      color: #1A3A5C;
+    }
+    .pillars {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    @media (min-width: 768px) {
+      .pillars { grid-template-columns: repeat(3, 1fr); }
+    }
+    .pillar {
+      background: #FFFFFF;
+      border: 1px solid #D1CEC6;
+      border-radius: 10px;
+      padding: 2rem 1.5rem;
+      border-top: 4px solid #1A3A5C;
+    }
+    .pillar:nth-child(2) { border-top-color: #E8501A; }
+    .pillar:nth-child(3) { border-top-color: #15803D; }
+    .pillar-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .pillar h3 {
+      font-family: "Syne", sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1A3A5C;
+      margin-bottom: 0.6rem;
+    }
+    .pillar p {
+      font-size: 0.95rem;
+      color: #6B7280;
+      line-height: 1.7;
+    }
+    .about-section-title {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 800;
+      color: #1A3A5C;
+      margin-bottom: 1.25rem;
+    }
+    .about-section-title em {
+      font-style: normal;
+      color: #E8501A;
+    }
+    .divider {
+      width: 48px;
+      height: 4px;
+      background: #F5C842;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+    .about-cta {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Aller au contenu</a>
+
+  <nav aria-label="Navigation principale">
+    <div class="w">
+      <a href="index.html" class="logo" aria-label="VilleNova accueil">
+        <img src="images/VilleNova.webp" alt="VilleNova" width="160" height="54" loading="eager">
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul id="nav-menu" role="list">
+        <li><a href="index.html">Agenda</a></li>
+        <li><a href="#">Carte</a></li>
+        <li><a href="#">Lieux</a></li>
+        <li><a href="a-propos.html" aria-current="page">A propos</a></li>
+        <li><a href="#" class="nav-cta">Mes favoris</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="w">
+      <h1>À propos de <em>VilleNova</em></h1>
+      <p>La plateforme culturelle qui réunit, inspire et rassemble toute une ville.</p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="about-section" aria-labelledby="mission-titre">
+      <div class="w">
+        <h2 class="about-section-title" id="mission-titre">Notre <em>mission</em></h2>
+        <div class="divider" aria-hidden="true"></div>
+        <p class="about-lead">
+          VilleNova est une application web moderne qui centralise l'ensemble des événements
+          culturels de la ville. Notre objectif est clair : <strong>redonner vie à la scène
+          culturelle locale</strong> en rendant la culture accessible à tous, tout en affirmant
+          l'image d'une ville moderne, inclusive et responsable sur le plan environnemental.
+        </p>
+        <p class="about-lead" style="margin-top:1rem;">
+          Concerts, expositions, spectacles, ateliers — chaque événement trouve sa place sur
+          VilleNova, qu'il soit gratuit ou payant, grand public ou confidentiel. Parce que la
+          culture appartient à tout le monde.
+        </p>
+
+        <div class="pillars" role="list">
+          <article class="pillar" role="listitem">
+            <span class="pillar-icon" aria-hidden="true">🎭</span>
+            <h3>Accessibilité</h3>
+            <p>
+              Tous les événements de la ville réunis en un seul endroit. Filtres par catégorie,
+              par date, par lieu — trouvez ce qui vous correspond en quelques secondes, gratuitement.
+            </p>
+          </article>
+          <article class="pillar" role="listitem">
+            <span class="pillar-icon" aria-hidden="true">⚡</span>
+            <h3>Modernité</h3>
+            <p>
+              Une interface fluide et responsive conçue pour tous les écrans. Recherche en
+              temps réel, agenda connecté à OpenAgenda, expérience pensée pour les usages
+              d'aujourd'hui.
+            </p>
+          </article>
+          <article class="pillar" role="listitem">
+            <span class="pillar-icon" aria-hidden="true">🌿</span>
+            <h3>Eco-responsabilité</h3>
+            <p>
+              VilleNova est conçue selon les principes du numérique responsable : pages légères,
+              images optimisées, chargement frugal. La culture à portée de clic, sans surcharge
+              pour la planète.
+            </p>
+          </article>
+        </div>
+
+        <div class="about-cta">
+          <a href="index.html" class="btn-b">Voir l'agenda</a>
+          <a href="#" class="btn-l">Proposer un événement</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="newsletter" aria-labelledby="nl-titre">
+    <div class="w">
+      <div>
+        <h2 id="nl-titre">Ne manquez plus rien</h2>
+        <p>Notre selection culturelle chaque semaine dans votre boite mail</p>
+      </div>
+      <form action="#" method="post" aria-label="Inscription newsletter">
+        <label for="email" class="sr-only">Votre email</label>
+        <input id="email" type="email" name="email" placeholder="votre@email.fr" autocomplete="email" required>
+        <button type="submit">S'inscrire</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="w">
+      <div class="brand">
+        <img src="images/VilleNova.webp" alt="VilleNova" width="130" height="44" loading="lazy">
+        <p>La plateforme culturelle officielle de VilleNova</p>
+        <span class="eco">Site eco-responsable - France</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="w">
+        <small> 2025 Mairie de VilleNova</small>
+        <nav aria-label="Liens legaux">
+          <a href="#">Mentions legales</a>
+          <a href="#">Confidentialite</a>
+          <a href="#">Accessibilite</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts/script.js"></script>
+</body>
+</html>

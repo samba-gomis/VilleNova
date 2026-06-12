@@ -23,7 +23,7 @@ document.addEventListener('click', e => {
 });
 
 /* ---- FILTRES ---- */
-document.querySelectorAll('.chip').forEach(chip => {
+if (document.querySelector('.chip')) document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
     document.querySelectorAll('.chip').forEach(c => {
       c.classList.remove('on');
@@ -44,7 +44,7 @@ document.querySelectorAll('.chip').forEach(chip => {
 });
 
 /* ---- FAVORIS ---- */
-document.getElementById('events-grid').addEventListener('click', e => {
+document.getElementById('events-grid')?.addEventListener('click', e => {
   const btn = e.target.closest('.cfav');
   if (!btn) return;
   const on = btn.getAttribute('aria-pressed') === 'true';
@@ -89,7 +89,7 @@ function paramsDate() {
   return extra;
 }
 
-document.querySelector('.search').addEventListener('submit', e => {
+document.querySelector('.search')?.addEventListener('submit', e => {
   e.preventDefault();
   offset = 0;
   charger(0);
@@ -189,10 +189,12 @@ function creerCarte(ev) {
 }
 
 /* ---- VOIR PLUS ---- */
-document.getElementById('btn-more').addEventListener('click', () => {
+document.getElementById('btn-more')?.addEventListener('click', () => {
   offset += LIMIT;
   charger(offset);
 });
 
 /* ---- INIT ---- */
-document.addEventListener('DOMContentLoaded', () => charger(0));
+if (document.getElementById('events-grid')) {
+  document.addEventListener('DOMContentLoaded', () => charger(0));
+}
