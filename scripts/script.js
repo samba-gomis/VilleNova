@@ -61,7 +61,7 @@ async function charger(off) {
   loading.hidden = false;
 
   try {
-    const res  = await fetch(`https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=${LIMIT}&offset=${off}`);
+    const res  = await fetch(`https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=${LIMIT}&offset=${off}&detailed=1`);
     const data = await res.json();
     total      = data.total || 0;
 
@@ -100,8 +100,11 @@ function creerCarte(ev) {
     else if (ev.image.url)                         image = ev.image.url;
   }
 
-  const gratuit = ev.registration?.some(r => r.price === 0);
-  const prix    = !gratuit && ev.registration?.[0]?.price ? ev.registration[0].price + ' €' : null;
+  const conditions = typeof ev.conditions === 'string'
+    ? ev.conditions
+    : (ev.conditions?.fr || ev.conditions?.en || '');
+  const gratuit = /gratuit|free|0\s*€/i.test(conditions.trim());
+  const prix    = !gratuit && conditions ? conditions : null;
 
   const art = document.createElement('article');
   art.className       = 'card';
