@@ -54,43 +54,38 @@ document.getElementById('events-grid').addEventListener('click', e => {
 });
 
 /* ---- RECHERCHE ---- */
-function paramsRecherche() {
-  const q      = document.getElementById('q').value.trim();
+function paramsDate() {
   const filtre = document.getElementById('date').value;
-  let extra = '';
+  if (!filtre) return '';
 
-  if (q) extra += `&search[keyword]=${encodeURIComponent(q)}`;
+  const now = new Date();
+  let gte, lte;
 
-  if (filtre) {
-    const now = new Date();
-    let gte, lte;
-
-    if (filtre === 'weekend') {
-      const day = now.getDay();
-      const sam = new Date(now);
-      if (day === 0) sam.setDate(now.getDate() - 1);
-      else           sam.setDate(now.getDate() + (6 - day));
-      sam.setHours(0, 0, 0, 0);
-      const dim = new Date(sam);
-      dim.setDate(sam.getDate() + 1);
-      dim.setHours(23, 59, 59, 999);
-      gte = sam; lte = dim;
-    } else if (filtre === 'semaine') {
-      gte = new Date(now);
-      gte.setDate(now.getDate() - ((now.getDay() + 6) % 7));
-      gte.setHours(0, 0, 0, 0);
-      lte = new Date(gte);
-      lte.setDate(gte.getDate() + 6);
-      lte.setHours(23, 59, 59, 999);
-    } else if (filtre === 'mois') {
-      gte = new Date(now.getFullYear(), now.getMonth(), 1);
-      lte = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
-    }
-
-    if (gte) extra += `&timings[gte]=${encodeURIComponent(gte.toISOString())}`;
-    if (lte) extra += `&timings[lte]=${encodeURIComponent(lte.toISOString())}`;
+  if (filtre === 'weekend') {
+    const day = now.getDay();
+    const sam = new Date(now);
+    if (day === 0) sam.setDate(now.getDate() - 1);
+    else           sam.setDate(now.getDate() + (6 - day));
+    sam.setHours(0, 0, 0, 0);
+    const dim = new Date(sam);
+    dim.setDate(sam.getDate() + 1);
+    dim.setHours(23, 59, 59, 999);
+    gte = sam; lte = dim;
+  } else if (filtre === 'semaine') {
+    gte = new Date(now);
+    gte.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+    gte.setHours(0, 0, 0, 0);
+    lte = new Date(gte);
+    lte.setDate(gte.getDate() + 6);
+    lte.setHours(23, 59, 59, 999);
+  } else if (filtre === 'mois') {
+    gte = new Date(now.getFullYear(), now.getMonth(), 1);
+    lte = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
   }
 
+  let extra = '';
+  if (gte) extra += `&timings[gte]=${encodeURIComponent(gte.toISOString())}`;
+  if (lte) extra += `&timings[lte]=${encodeURIComponent(lte.toISOString())}`;
   return extra;
 }
 
@@ -108,7 +103,7 @@ async function charger(off) {
   loading.hidden = false;
 
   try {
-    const res  = await fetch(`https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=${LIMIT}&offset=${off}&detailed=1${paramsRecherche()}`);
+    const res  = await fetch(`https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=${LIMIT}&offset=${off}&detailed=1${paramsDate()}`);
     const data = await res.json();
     total      = data.total || 0;
 
@@ -116,13 +111,22 @@ async function charger(off) {
 
     (data.events || []).forEach(e => grid.appendChild(creerCarte(e)));
 
-    if (!data.events?.length && off === 0) {
-      grid.innerHTML = '<p style="padding:2rem;grid-column:1/-1">Aucun evenement trouve pour cette recherche.</p>';
+    const q = document.getElementById('q').value.trim().toLowerCase();
+    if (q) {
+      grid.querySelectorAll('.card').forEach(card => {
+        const titre = card.querySelector('h3')?.textContent.toLowerCase() || '';
+        const lieu  = card.querySelector('address')?.textContent.toLowerCase() || '';
+        card.hidden = !titre.includes(q) && !lieu.includes(q);
+      });
     }
 
-    const nb = grid.querySelectorAll('.card').length;
+    const nb = grid.querySelectorAll('.card:not([hidden])').length;
     document.getElementById('nb-resultats').textContent = total;
     document.getElementById('compteur').textContent     = nb;
+
+    if (!nb && off === 0) {
+      grid.innerHTML = '<p style="padding:2rem;grid-column:1/-1">Aucun evenement trouve pour cette recherche.</p>';
+    }
 
     const btnMore = document.getElementById('btn-more');
     btnMore.hidden = nb >= total;
