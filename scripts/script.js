@@ -2,7 +2,7 @@
 
 const API_KEY   = '3a0c95fcb5fa426fb34f9a49557dbc07';
 const AGENDA_ID = '9571344';
-const LIMIT     = 12;
+const LIMIT     = 6;
 let offset      = 0;
 let total       = 0;
 
