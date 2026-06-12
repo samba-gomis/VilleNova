@@ -383,6 +383,9 @@ main .w {
   flex-direction: column;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+.card[hidden] {
+  display: none;
+}
 .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 20px rgba(26, 58, 92, 0.14);
