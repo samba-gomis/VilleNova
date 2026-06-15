@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VilleNova — Détail de l'événement">
+  <title>Événement — VilleNova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image" href="../images/VilleNova.webp">
+  <link rel="stylesheet" href="../styles/style.css">
+  <style>
+    .detail-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #1A3A5C;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 1.75rem;
+      transition: color 0.2s;
+    }
+    .detail-back:hover { color: #E8501A; }
+
+    .detail-hero-img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (min-width: 768px) {
+      .detail-grid { grid-template-columns: 2fr 1fr; }
+    }
+
+    .detail-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .detail-badge {
+      background: #1A3A5C;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .detail-title {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 800;
+      color: #1A3A5C;
+      margin-bottom: 1.5rem;
+      line-height: 1.15;
+    }
+    .detail-description {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #1C1C1C;
+    }
+    .detail-description p { margin-bottom: 1rem; }
+
+    .detail-info-block {
+      background: #FFFFFF;
+      border: 1px solid #D1CEC6;
+      border-left: 4px solid #1A3A5C;
+      border-radius: 8px;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .detail-info-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6B7280;
+      margin-bottom: 0.3rem;
+      font-weight: 700;
+    }
+    .detail-info-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1C1C1C;
+      line-height: 1.4;
+    }
+    .detail-info-sub {
+      font-size: 0.88rem;
+      color: #6B7280;
+      margin-top: 0.2rem;
+    }
+    .detail-timings {
+      list-style: none;
+      padding: 0;
+      margin-top: 0.5rem;
+    }
+    .detail-timings li {
+      padding: 0.4rem 0;
+      border-bottom: 1px solid #D1CEC6;
+      font-size: 0.9rem;
+      color: #1C1C1C;
+    }
+    .detail-timings li:last-child { border-bottom: none; }
+
+    #event-detail-loading {
+      padding: 4rem 1rem;
+      text-align: center;
+      color: #6B7280;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Aller au contenu</a>
+
+  <nav aria-label="Navigation principale">
+    <div class="w">
+      <a href="../index.html" class="logo" aria-label="VilleNova accueil">
+        <img src="../images/VilleNova.webp" alt="VilleNova" width="160" height="54" loading="eager">
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul id="nav-menu" role="list">
+        <li><a href="../index.html">Agenda</a></li>
+        <li><a href="#">Carte</a></li>
+        <li><a href="#">Lieux</a></li>
+        <li><a href="a-propos.html">A propos</a></li>
+        <li><a href="favoris.html" class="nav-cta">Mes favoris</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main">
+    <div id="event-detail">
+      <p id="event-detail-loading">Chargement de l'evenement...</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="w">
+      <div class="brand">
+        <img src="../images/VilleNova.webp" alt="VilleNova" width="130" height="44" loading="lazy">
+        <p>La plateforme culturelle officielle de VilleNova</p>
+        <span class="eco">Site eco-responsable - France</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="w">
+        <small> 2025 Mairie de VilleNova</small>
+        <nav aria-label="Liens legaux">
+          <a href="#">Mentions legales</a>
+          <a href="#">Confidentialite</a>
+          <a href="#">Accessibilite</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../scripts/script.js"></script>
+</body>
+</html>

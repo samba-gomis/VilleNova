@@ -6,6 +6,9 @@ const LIMIT     = 6;
 let offset      = 0;
 let total       = 0;
 
+// Préfixe vers le dossier html/ selon la page courante
+const BASE = window.location.pathname.includes('/html/') ? '' : 'html/';
+
 /* ---- MENU MOBILE ---- */
 const toggle = document.querySelector('.nav-toggle');
 const menu   = document.getElementById('nav-menu');
@@ -203,7 +206,7 @@ function creerCarte(ev) {
     </div>
     <div class="card-footer">
       ${gratuit ? '<span class="free">Gratuit</span>' : prix ? `<span class="price">${prix}</span>` : '<span></span>'}
-      <a href="event-detail.html?id=${ev.uid}" class="btn-b">${gratuit ? 'En savoir plus' : 'Reserver'}</a>
+      <a href="${BASE}event-detail.html?id=${ev.uid}" class="btn-b">${gratuit ? 'En savoir plus' : 'Reserver'}</a>
     </div>
   `;
 
@@ -237,6 +240,16 @@ function restaurerFavoris() {
   });
 }
 
+/* ---- CARTE CLIQUABLE ---- */
+['events-grid', 'favoris-grid'].forEach(id => {
+  document.getElementById(id)?.addEventListener('click', e => {
+    if (e.target.closest('.cfav') || e.target.closest('.btn-b')) return;
+    const card = e.target.closest('.card');
+    if (!card?.dataset.uid) return;
+    window.location.href = `${BASE}event-detail.html?id=${card.dataset.uid}`;
+  });
+});
+
 /* ---- PAGE FAVORIS ---- */
 const favorisGrid = document.getElementById('favoris-grid');
 if (favorisGrid) {
@@ -264,7 +277,7 @@ if (favorisGrid) {
         </div>
         <div class="card-footer">
           ${ev.gratuit ? '<span class="free">Gratuit</span>' : ev.prix ? `<span class="price">${ev.prix}</span>` : '<span></span>'}
-          <a href="event-detail.html?id=${ev.uid}" class="btn-b">${ev.gratuit ? 'En savoir plus' : 'Reserver'}</a>
+          <a href="${BASE}event-detail.html?id=${ev.uid}" class="btn-b">${ev.gratuit ? 'En savoir plus' : 'Reserver'}</a>
         </div>
       `;
       favorisGrid.appendChild(art);
@@ -292,4 +305,113 @@ if (favorisGrid) {
 /* ---- INIT ---- */
 if (document.getElementById('events-grid')) {
   document.addEventListener('DOMContentLoaded', () => charger(0));
+}
+
+/* ---- PAGE DETAIL ---- */
+const detailContainer = document.getElementById('event-detail');
+if (detailContainer) {
+  const uid = new URLSearchParams(window.location.search).get('id');
+  if (!uid) {
+    detailContainer.innerHTML = '<div class="w" style="padding:2rem"><p>Evenement introuvable.</p><a href="../index.html" class="btn-l" style="margin-top:1rem;display:inline-block">Retour a l\'agenda</a></div>';
+  } else {
+    fetch(`https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events/${uid}?key=${API_KEY}&detailed=1`)
+      .then(r => r.json())
+      .then(data => {
+        if (!data.event) throw new Error();
+        afficherDetail(data.event, detailContainer);
+      })
+      .catch(() => {
+        detailContainer.innerHTML = '<div class="w" style="padding:2rem"><p style="color:#DC2626">Impossible de charger cet evenement.</p><a href="../index.html" class="btn-l" style="margin-top:1rem;display:inline-block">Retour a l\'agenda</a></div>';
+      });
+  }
+}
+
+function afficherDetail(ev, container) {
+  const titre      = ev.title?.fr || 'Sans titre';
+  const desc       = ev.longDescription?.fr || ev.description?.fr || '';
+  const conditions = typeof ev.conditions === 'string' ? ev.conditions : (ev.conditions?.fr || ev.conditions?.en || '');
+  const gratuit    = /gratuit|free|0\s*€/i.test(conditions.trim());
+  const cat        = (ev.keywords?.fr?.[0] || '')
+    .toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/s$/, '');
+  const lieu       = ev.location || {};
+  const adresse    = [lieu.address, lieu.postalCode, lieu.city].filter(Boolean).join(', ');
+
+  // Image pleine résolution
+  let imageSrc = null;
+  if (ev.image) {
+    const full = ev.image.variants?.find(v => v.type === 'full');
+    imageSrc = ev.image.base + (full ? full.filename : ev.image.filename || '');
+  }
+
+  // Dates
+  const debut   = ev.firstTiming?.begin ? new Date(ev.firstTiming.begin) : null;
+  const fin     = ev.firstTiming?.end   ? new Date(ev.firstTiming.end)   : null;
+  const fmtD    = d => d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const fmtT    = d => d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+  const timings = ev.timings || [];
+
+  document.title = `${titre} — VilleNova`;
+
+  container.innerHTML = `
+    <div class="w" style="padding-top:2rem;padding-bottom:3rem;">
+
+      <a href="../index.html" class="detail-back">← Retour a l'agenda</a>
+
+      ${imageSrc ? `<img src="${imageSrc}" alt="${titre}" class="detail-hero-img">` : ''}
+
+      <div class="detail-grid">
+
+        <div>
+          <div class="detail-meta">
+            ${cat ? `<span class="detail-badge">${cat}</span>` : ''}
+            ${gratuit ? '<span class="free">Gratuit</span>' : conditions ? `<span class="price">${conditions}</span>` : ''}
+            ${ev.attendanceMode === 2 || ev.attendanceMode === 3 ? '<span class="detail-badge" style="background:#E8501A;">En ligne</span>' : ''}
+          </div>
+          <h1 class="detail-title">${titre}</h1>
+          ${desc ? `<div class="detail-description">${desc}</div>` : ''}
+          ${ev.onlineAccessLink ? `<div style="margin-top:1.5rem;"><a href="${ev.onlineAccessLink}" class="btn-b" target="_blank" rel="noopener noreferrer">Acceder en ligne</a></div>` : ''}
+        </div>
+
+        <aside>
+          ${debut ? `
+          <div class="detail-info-block">
+            <p class="detail-info-label">Date</p>
+            <p class="detail-info-value">${fmtD(debut)}</p>
+            ${fin ? `<p class="detail-info-sub">${fmtT(debut)} – ${fmtT(fin)}</p>` : ''}
+          </div>` : ''}
+
+          ${lieu.name ? `
+          <div class="detail-info-block">
+            <p class="detail-info-label">Lieu</p>
+            <p class="detail-info-value">${lieu.name}</p>
+            ${adresse ? `<p class="detail-info-sub">${adresse}</p>` : ''}
+          </div>` : ''}
+
+          ${timings.length > 1 ? `
+          <div class="detail-info-block">
+            <p class="detail-info-label">Toutes les dates (${timings.length})</p>
+            <ul class="detail-timings">
+              ${timings.slice(0, 8).map(t => {
+                const d = new Date(t.begin);
+                return `<li>${d.toLocaleDateString('fr-FR', {weekday:'short',day:'numeric',month:'short'})} · ${fmtT(d)}</li>`;
+              }).join('')}
+              ${timings.length > 8 ? `<li class="detail-info-sub">+ ${timings.length - 8} autres dates</li>` : ''}
+            </ul>
+          </div>` : ''}
+
+          ${ev.age?.min != null || ev.age?.max != null ? `
+          <div class="detail-info-block">
+            <p class="detail-info-label">Public</p>
+            <p class="detail-info-value">${ev.age?.min != null ? 'Des ' + ev.age.min + ' ans' : ''}${ev.age?.max != null ? (ev.age?.min != null ? ' — ' : '') + 'jusqu\'a ' + ev.age.max + ' ans' : ''}</p>
+          </div>` : ''}
+
+          ${ev.imageCredits ? `
+          <div class="detail-info-block">
+            <p class="detail-info-label">Credit photo</p>
+            <p class="detail-info-sub">${ev.imageCredits}</p>
+          </div>` : ''}
+        </aside>
+      </div>
+    </div>
+  `;
 }
