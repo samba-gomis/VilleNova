@@ -45,12 +45,21 @@ if (document.querySelector('.chip')) document.querySelectorAll('.chip').forEach(
 
 /* ---- FAVORIS ---- */
 document.getElementById('events-grid')?.addEventListener('click', e => {
-  const btn = e.target.closest('.cfav');
+  const btn  = e.target.closest('.cfav');
   if (!btn) return;
-  const on = btn.getAttribute('aria-pressed') === 'true';
-  btn.setAttribute('aria-pressed', !on);
-  btn.innerHTML  = on ? '&#9825;' : '&#9829;';
+  const card = btn.closest('.card');
+  const on   = btn.getAttribute('aria-pressed') === 'true';
+
+  btn.setAttribute('aria-pressed', String(!on));
+  btn.innerHTML   = on ? '&#9825;' : '&#9829;';
   btn.style.color = on ? '' : '#E8501A';
+
+  const data = JSON.parse(card?.dataset.event || 'null');
+  if (!data) return;
+  const favs = JSON.parse(localStorage.getItem('villenova_favoris') || '{}');
+  if (on) delete favs[data.uid];
+  else    favs[data.uid] = data;
+  localStorage.setItem('villenova_favoris', JSON.stringify(favs));
 });
 
 /* ---- RECHERCHE ---- */
@@ -120,7 +129,10 @@ async function charger(off) {
       });
     }
 
-    const nb = grid.querySelectorAll('.card:not([hidden])').length;
+    restaurerFavoris();
+
+    const loaded  = grid.querySelectorAll('.card').length;
+    const nb      = grid.querySelectorAll('.card:not([hidden])').length;
     document.getElementById('nb-resultats').textContent = total;
     document.getElementById('compteur').textContent     = nb;
 
@@ -129,7 +141,15 @@ async function charger(off) {
     }
 
     const btnMore = document.getElementById('btn-more');
-    btnMore.hidden = nb >= total;
+    if (loaded >= total && total > LIMIT) {
+      btnMore.textContent  = 'Voir moins';
+      btnMore.dataset.mode = 'moins';
+      btnMore.hidden       = false;
+    } else {
+      btnMore.textContent  = 'Voir plus';
+      btnMore.dataset.mode = 'plus';
+      btnMore.hidden       = loaded >= total;
+    }
 
   } catch {
     grid.innerHTML = '<p role="alert" style="color:#DC2626;padding:2rem;grid-column:1/-1">Impossible de charger les evenements.</p>';
@@ -165,8 +185,10 @@ function creerCarte(ev) {
   const prix    = !gratuit && conditions ? conditions : null;
 
   const art = document.createElement('article');
-  art.className       = 'card';
-  art.dataset.cat     = cat.toLowerCase();
+  art.className      = 'card';
+  art.dataset.cat    = cat.toLowerCase();
+  art.dataset.uid    = ev.uid;
+  art.dataset.event  = JSON.stringify({ uid: ev.uid, titre, lieu, date, cat, image, gratuit, prix });
 
   art.innerHTML = `
     <div class="card-img">
@@ -188,11 +210,84 @@ function creerCarte(ev) {
   return art;
 }
 
-/* ---- VOIR PLUS ---- */
+/* ---- VOIR PLUS / MOINS ---- */
 document.getElementById('btn-more')?.addEventListener('click', () => {
-  offset += LIMIT;
-  charger(offset);
+  const btn = document.getElementById('btn-more');
+  if (btn.dataset.mode === 'moins') {
+    offset = 0;
+    charger(0);
+  } else {
+    offset += LIMIT;
+    charger(offset);
+  }
 });
+
+/* ---- RESTAURER FAVORIS ---- */
+function restaurerFavoris() {
+  const favs = JSON.parse(localStorage.getItem('villenova_favoris') || '{}');
+  document.querySelectorAll('#events-grid .card').forEach(card => {
+    if (card.dataset.uid && favs[card.dataset.uid]) {
+      const btn = card.querySelector('.cfav');
+      if (btn) {
+        btn.setAttribute('aria-pressed', 'true');
+        btn.innerHTML   = '&#9829;';
+        btn.style.color = '#E8501A';
+      }
+    }
+  });
+}
+
+/* ---- PAGE FAVORIS ---- */
+const favorisGrid = document.getElementById('favoris-grid');
+if (favorisGrid) {
+  const favs   = JSON.parse(localStorage.getItem('villenova_favoris') || '{}');
+  const events = Object.values(favs);
+
+  if (!events.length) {
+    favorisGrid.innerHTML = '<p style="padding:2rem;grid-column:1/-1;color:#6B7280">Aucun favori pour l\'instant. Ajoutez des evenements depuis l\'<a href="index.html" style="color:#1A3A5C;text-decoration:underline">agenda</a>.</p>';
+  } else {
+    events.forEach(ev => {
+      const art = document.createElement('article');
+      art.className   = 'card';
+      art.dataset.cat = ev.cat;
+      art.dataset.uid = ev.uid;
+      art.innerHTML = `
+        <div class="card-img">
+          ${ev.image ? `<img src="${ev.image}" alt="Affiche ${ev.titre}" width="392" height="150" loading="lazy">` : ''}
+          <span class="cbadge">${ev.cat}</span>
+          <button class="cfav" aria-pressed="true" aria-label="Retirer des favoris ${ev.titre}" style="color:#E8501A">&#9829;</button>
+        </div>
+        <div class="card-body">
+          <p class="cdate"><time>${ev.date}</time></p>
+          <h3>${ev.titre}</h3>
+          <address>${ev.lieu}</address>
+        </div>
+        <div class="card-footer">
+          ${ev.gratuit ? '<span class="free">Gratuit</span>' : ev.prix ? `<span class="price">${ev.prix}</span>` : '<span></span>'}
+          <a href="event-detail.html?id=${ev.uid}" class="btn-b">${ev.gratuit ? 'En savoir plus' : 'Reserver'}</a>
+        </div>
+      `;
+      favorisGrid.appendChild(art);
+    });
+  }
+
+  favorisGrid.addEventListener('click', e => {
+    const btn  = e.target.closest('.cfav');
+    if (!btn) return;
+    const card = btn.closest('.card');
+    const uid  = card?.dataset.uid;
+    if (!uid) return;
+
+    const favs = JSON.parse(localStorage.getItem('villenova_favoris') || '{}');
+    delete favs[uid];
+    localStorage.setItem('villenova_favoris', JSON.stringify(favs));
+    card.remove();
+
+    if (!favorisGrid.querySelector('.card')) {
+      favorisGrid.innerHTML = '<p style="padding:2rem;grid-column:1/-1;color:#6B7280">Aucun favori pour l\'instant. Ajoutez des evenements depuis l\'<a href="index.html" style="color:#1A3A5C;text-decoration:underline">agenda</a>.</p>';
+    }
+  });
+}
 
 /* ---- INIT ---- */
 if (document.getElementById('events-grid')) {
