@@ -338,9 +338,8 @@ function afficherDetail(ev, container) {
 
   // Image pleine résolution
   let imageSrc = null;
-  if (ev.image) {
-    const full = ev.image.variants?.find(v => v.type === 'full');
-    imageSrc = ev.image.base + (full ? full.filename : ev.image.filename || '');
+  if (ev.image?.base && ev.image?.filename) {
+    imageSrc = ev.image.base + ev.image.filename;
   }
 
   // Dates
@@ -357,7 +356,7 @@ function afficherDetail(ev, container) {
 
       <a href="../index.html" class="detail-back">← Retour a l'agenda</a>
 
-      ${imageSrc ? `<img src="${imageSrc}" alt="${titre}" class="detail-hero-img">` : ''}
+      ${imageSrc ? `<img src="${imageSrc}" alt="${titre}" class="detail-hero-img" decoding="async" loading="eager">` : ''}
 
       <div class="detail-grid">
 
