@@ -27,9 +27,9 @@ main { padding: 2rem 0 3rem; .w { padding: 0 1rem; } }
   img { width: 100%; height: 100%; object-fit: cover; }
 }
 
-.cbadge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,.6); color: $white; font-size: .72rem; padding: 3px 9px; border-radius: 5px; }
+.card-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,.6); color: $white; font-size: .72rem; padding: 3px 9px; border-radius: 5px; }
 
-.cfav {
+.card-fav {
   position: absolute; top: 10px; right: 10px;
   background: rgba($white, .92); border: none; width: 30px; height: 30px; border-radius: 50%;
   cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
@@ -39,9 +39,9 @@ main { padding: 2rem 0 3rem; .w { padding: 0 1rem; } }
 }
 
 .card-body     { padding: 1rem; flex: 1; }
-.cdate         { font-size: .78rem; color: $secondary; font-weight: 500; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 4px; }
+.card-date         { font-size: .78rem; color: $secondary; font-weight: 500; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 4px; }
 .card-body h3  { font-family: $font-title; font-size: .95rem; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
-.clieu         { font-size: .8rem; color: $gray; }
+.card-location         { font-size: .8rem; color: $gray; }
 
 .card-footer   { display: flex; justify-content: space-between; align-items: center; padding: .75rem 1rem; border-top: 1px solid $border; }
 .price         { font-family: $font-title; font-size: .95rem; font-weight: 700; color: $primary; }
