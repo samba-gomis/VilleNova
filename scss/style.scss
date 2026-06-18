@@ -79,7 +79,7 @@ nav {
 
 .hero-stats {
   display: flex; flex-wrap: wrap; gap: 1.5rem;
-  div { display: flex; flex-direction: column; }
+  li { display: flex; flex-direction: column; }
   strong { font-family: $font-title; font-size: clamp(1.3rem, 4vw, 1.6rem); font-weight: 800; color: $accent; line-height: 1; }
   span   { font-size: .8rem; color: rgba($white, .5); margin-top: 2px; }
 }
