@@ -1,0 +1,33 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+footer {
+  background: $dark; color: rgba($white, .55); padding: 3rem 1rem 0;
+
+  .w { display: grid; grid-template-columns: 1fr; gap: 2rem; padding-bottom: 2rem;
+    @include bp(sm) { grid-template-columns: repeat(2, 1fr); .brand { grid-column: 1 / -1; } }
+    @include bp(md) { grid-template-columns: 2fr 1fr 1fr 1fr; .brand { grid-column: auto; } }
+  }
+
+  h3 { font-family: $font-title; font-size: .875rem; color: $white; margin-bottom: .75rem; }
+  ul li  { margin-bottom: .4rem; }
+  ul a   { font-size: .875rem; color: rgba($white, .5); transition: color .2s; &:hover { color: $white; } }
+}
+
+.brand {
+  img { height: 46px; width: auto; margin-bottom: .75rem; }
+  p   { font-size: .875rem; line-height: 1.6; }
+}
+
+.eco { display: inline-block; font-size: .78rem; color: #4ADE80; margin-top: .75rem; padding: 3px 10px; background: rgba(74,222,128,.1); border: 1px solid rgba(74,222,128,.25); border-radius: 5px; }
+
+.footer-bottom {
+  border-top: 1px solid rgba($white, .08);
+  .w { display: flex; flex-direction: column; gap: .75rem; padding-top: 1.25rem; padding-bottom: 1.25rem;
+    @include bp(md) { flex-direction: row; justify-content: space-between; align-items: center; }
+  }
+  small { font-size: .8rem; color: rgba($white, .4); }
+  nav   { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem;
+    a { font-size: .8rem; color: rgba($white, .4); transition: color .2s; &:hover { color: $white; } }
+  }
+}

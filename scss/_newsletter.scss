@@ -1,0 +1,26 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.newsletter {
+  background: $accent; padding: 3rem 1rem;
+
+  .w { display: flex; flex-direction: column; gap: 1.5rem;
+    @include bp(md) { flex-direction: row; align-items: center; justify-content: space-between; }
+  }
+
+  h2 { font-family: $font-title; font-size: clamp(1.2rem, 4vw, 1.6rem); font-weight: 800; color: $primary; margin-bottom: .4rem; }
+  p  { color: rgba($primary, .7); font-size: .95rem; }
+
+  form { display: flex; flex-direction: column; gap: .6rem;
+    @include bp(sm) { flex-direction: row; }
+  }
+
+  input {
+    flex: 1; border: 2px solid rgba($primary, .2); border-radius: 5px;
+    padding: .75rem 1rem; font-size: .95rem; background: rgba($white, .6);
+    font-family: $font-body; color: $primary; outline: none;
+    &:focus { border-color: $primary; background: rgba($white, .85); }
+  }
+
+  button { @include btn($primary); padding: .75rem 1.25rem; }
+}

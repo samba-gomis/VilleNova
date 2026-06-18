@@ -1,0 +1,36 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+nav {
+  background: $primary;
+  position: sticky; top: 0; z-index: 100;
+  padding: 0 1rem;
+
+  .w { display: flex; align-items: center; justify-content: space-between; height: $nav-h; }
+
+  ul {
+    display: none; flex-direction: column;
+    position: absolute; top: $nav-h; left: 0; right: 0;
+    background: $primary; padding: 1rem; gap: 1rem;
+    border-top: 1px solid rgba($white, .1);
+    &.open { display: flex; }
+    a { color: rgba($white, .75); font-size: .95rem; transition: color .2s;
+      &:hover, &[aria-current] { color: $white; }
+    }
+  }
+
+  @include bp(md) {
+    ul { display: flex; flex-direction: row; position: static; background: none; padding: 0; gap: 2rem; border: none; align-items: center; }
+  }
+}
+
+.logo img    { height: 44px; width: auto; }
+
+.nav-toggle {
+  display: flex; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: .5rem;
+  span { display: block; width: 24px; height: 2px; background: $white; border-radius: 2px; }
+  @include bp(md) { display: none; }
+}
+
+.nav-cta { @include btn($secondary); padding: .45rem 1rem; font-size: .875rem; }
