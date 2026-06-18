@@ -8,7 +8,7 @@ let total       = 0;
 
 const BASE = window.location.pathname.includes('/html/') ? '' : 'html/';
 
-/* ---- ECHAPPEMENT XSS ---- */
+/* ---- XSS ESCAPING ---- */
 function esc(s) {
   return String(s ?? '')
     .replace(/&/g, '&amp;')
@@ -18,7 +18,7 @@ function esc(s) {
     .replace(/'/g, '&#x27;');
 }
 
-/* ---- MENU MOBILE ---- */
+/* ---- MOBILE MENU ---- */
 const toggle = document.querySelector('.nav-toggle');
 const menu   = document.getElementById('nav-menu');
 
@@ -36,16 +36,16 @@ if (toggle && menu) {
   });
 }
 
-/* ---- FILTRES ---- */
-function appliquerFiltre() {
-  const chip   = document.querySelector('.chip.on');
-  const filtre = chip?.dataset.filter || 'tous';
+/* ---- CATEGORY FILTER ---- */
+function applyFilter() {
+  const chip     = document.querySelector('.chip.on');
+  const category = chip?.dataset.filter || 'tous';
   document.querySelectorAll('#events-grid .card').forEach(card => {
-    card.hidden = filtre !== 'tous' && card.dataset.cat !== filtre;
+    card.hidden = category !== 'tous' && card.dataset.category !== category;
   });
-  const nb = document.querySelectorAll('#events-grid .card:not([hidden])').length;
-  const compteur = document.getElementById('compteur');
-  if (compteur) compteur.textContent = nb;
+  const count = document.querySelectorAll('#events-grid .card:not([hidden])').length;
+  const counter = document.getElementById('counter');
+  if (counter) counter.textContent = count;
 }
 
 if (document.querySelector('.chip')) {
@@ -57,84 +57,84 @@ if (document.querySelector('.chip')) {
       });
       chip.classList.add('on');
       chip.setAttribute('aria-pressed', 'true');
-      appliquerFiltre();
-      const nb = document.querySelectorAll('#events-grid .card:not([hidden])').length;
-      const annonce = document.getElementById('annonce');
-      if (annonce) annonce.textContent = nb + ' événements pour : ' + chip.textContent;
+      applyFilter();
+      const count        = document.querySelectorAll('#events-grid .card:not([hidden])').length;
+      const announcement = document.getElementById('announcement');
+      if (announcement) announcement.textContent = count + ' événements pour : ' + chip.textContent;
     });
   });
 }
 
-/* ---- FAVORIS (grille agenda) ---- */
+/* ---- FAVORITES (agenda grid) ---- */
 document.getElementById('events-grid')?.addEventListener('click', e => {
-  const btn  = e.target.closest('.cfav');
+  const btn  = e.target.closest('.card-fav');
   if (!btn) return;
   const card = btn.closest('.card');
   const on   = btn.getAttribute('aria-pressed') === 'true';
 
   btn.setAttribute('aria-pressed', String(!on));
   btn.innerHTML = on ? '&#9825;' : '&#9829;';
-  btn.classList.toggle('cfav--on', !on);
+  btn.classList.toggle('card-fav--on', !on);
 
   const data = JSON.parse(card?.dataset.event || 'null');
   if (!data) return;
-  const favs = JSON.parse(localStorage.getItem('villenova_favoris') || '{}');
-  if (on) delete favs[data.uid];
-  else    favs[data.uid] = data;
-  localStorage.setItem('villenova_favoris', JSON.stringify(favs));
+  const favorites = JSON.parse(localStorage.getItem('villenova_favorites') || '{}');
+  if (on) delete favorites[data.uid];
+  else    favorites[data.uid] = data;
+  localStorage.setItem('villenova_favorites', JSON.stringify(favorites));
 });
 
-/* ---- PARAMETRES DATE ---- */
-function paramsDate() {
-  const filtre = document.getElementById('date')?.value;
-  if (!filtre) return '';
+/* ---- DATE PARAMS ---- */
+function buildDateParams() {
+  const filter = document.getElementById('date')?.value;
+  if (!filter) return '';
 
   const now = new Date();
   let gte, lte;
 
-  if (filtre === 'weekend') {
+  if (filter === 'weekend') {
     const day = now.getDay();
-    const sam = new Date(now);
-    sam.setDate(now.getDate() + (day === 6 ? 0 : day === 0 ? 0 : 6 - day));
-    sam.setHours(0, 0, 0, 0);
-    const dim = new Date(sam);
-    dim.setDate(sam.getDate() + (day === 0 ? 0 : 1));
-    dim.setHours(23, 59, 59, 999);
-    gte = sam; lte = dim;
-  } else if (filtre === 'semaine') {
+    const sat = new Date(now);
+    sat.setDate(now.getDate() + (day === 6 ? 0 : day === 0 ? 0 : 6 - day));
+    sat.setHours(0, 0, 0, 0);
+    const sun = new Date(sat);
+    sun.setDate(sat.getDate() + (day === 0 ? 0 : 1));
+    sun.setHours(23, 59, 59, 999);
+    gte = sat; lte = sun;
+  } else if (filter === 'semaine') {
     gte = new Date(now); gte.setHours(0, 0, 0, 0);
     lte = new Date(now); lte.setDate(now.getDate() + 7); lte.setHours(23, 59, 59, 999);
-  } else if (filtre === 'mois') {
+  } else if (filter === 'mois') {
     gte = new Date(now); gte.setHours(0, 0, 0, 0);
     lte = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
   }
 
-  let extra = '';
-  if (gte) extra += `&timings[gte]=${encodeURIComponent(gte.toISOString())}`;
-  if (lte) extra += `&timings[lte]=${encodeURIComponent(lte.toISOString())}`;
-  return extra;
+  let params = '';
+  if (gte) params += `&timings[gte]=${encodeURIComponent(gte.toISOString())}`;
+  if (lte) params += `&timings[lte]=${encodeURIComponent(lte.toISOString())}`;
+  return params;
 }
 
-/* ---- RECHERCHE ---- */
+/* ---- SEARCH FORM ---- */
 document.querySelector('.search')?.addEventListener('submit', e => {
   e.preventDefault();
   offset = 0;
-  charger(0);
+  loadEvents(0);
 });
 
-/* ---- API OPENAGENDA ---- */
-async function charger(off) {
+/* ---- OPENAGENDA API ---- */
+async function loadEvents(off) {
   const loading = document.getElementById('loading');
   const grid    = document.getElementById('events-grid');
   if (!grid) return;
 
   if (loading) loading.hidden = false;
 
-  const q = document.getElementById('q')?.value.trim() || '';
+  const query = document.getElementById('q')?.value.trim() || '';
 
   try {
-    let url = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=${LIMIT}&offset=${off}&detailed=1${paramsDate()}`;
-    if (q) url += `&search=${encodeURIComponent(q)}`;
+    let url = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=${LIMIT}&offset=${off}&detailed=1${buildDateParams()}`;
+    if (query) url += `&search=${encodeURIComponent(query)}`;
 
     const res  = await fetch(url);
     const data = await res.json();
@@ -142,19 +142,19 @@ async function charger(off) {
 
     if (off === 0) grid.innerHTML = '';
 
-    (data.events || []).forEach(e => grid.appendChild(creerCarte(e)));
+    (data.events || []).forEach(ev => grid.appendChild(createCard(ev)));
 
-    restaurerFavoris();
-    appliquerFiltre();
+    restoreFavorites();
+    applyFilter();
 
-    const loaded = grid.querySelectorAll('.card').length;
-    const nb     = grid.querySelectorAll('.card:not([hidden])').length;
-    const nbRes  = document.getElementById('nb-resultats');
-    const cpt    = document.getElementById('compteur');
-    if (nbRes) nbRes.textContent = total;
-    if (cpt)   cpt.textContent  = nb;
+    const loaded       = grid.querySelectorAll('.card').length;
+    const visibleCount = grid.querySelectorAll('.card:not([hidden])').length;
+    const resultsCount = document.getElementById('results-count');
+    const counter      = document.getElementById('counter');
+    if (resultsCount) resultsCount.textContent = total;
+    if (counter)      counter.textContent      = visibleCount;
 
-    if (!nb && off === 0) {
+    if (!visibleCount && off === 0) {
       grid.innerHTML = '<p class="card--error">Aucun événement trouvé pour cette recherche.</p>';
     }
 
@@ -178,14 +178,14 @@ async function charger(off) {
   }
 }
 
-/* ---- CREER UNE CARTE ---- */
-function creerCarte(ev) {
-  const titre = ev.title?.fr || 'Sans titre';
-  const lieu  = ev.location?.name || '';
-  const date  = ev.firstTiming?.begin
+/* ---- CREATE CARD ---- */
+function createCard(ev) {
+  const title    = ev.title?.fr || 'Sans titre';
+  const location = ev.location?.name || '';
+  const date     = ev.firstTiming?.begin
     ? new Date(ev.firstTiming.begin).toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit' })
     : '';
-  const cat = (ev.keywords?.fr?.[0] || 'evenement')
+  const category = (ev.keywords?.fr?.[0] || 'evenement')
     .toLowerCase()
     .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/s$/, '');
@@ -201,131 +201,131 @@ function creerCarte(ev) {
   const conditions = typeof ev.conditions === 'string'
     ? ev.conditions
     : (ev.conditions?.fr || ev.conditions?.en || '');
-  const gratuit = /gratuit|free|0\s*€/i.test(conditions.trim());
-  const prix    = !gratuit && conditions ? conditions : null;
+  const isFree = /gratuit|free|0\s*€/i.test(conditions.trim());
+  const price  = !isFree && conditions ? conditions : null;
 
-  const art = document.createElement('article');
-  art.className     = 'card';
-  art.dataset.cat   = cat;
-  art.dataset.uid   = ev.uid;
-  art.dataset.event = JSON.stringify({ uid: ev.uid, titre, lieu, date, cat, image, gratuit, prix });
+  const article = document.createElement('article');
+  article.className      = 'card';
+  article.dataset.category = category;
+  article.dataset.uid    = ev.uid;
+  article.dataset.event  = JSON.stringify({ uid: ev.uid, title, location, date, category, image, isFree, price });
 
-  art.innerHTML = `
+  article.innerHTML = `
     <div class="card-img">
-      ${image ? `<img src="${esc(image)}" alt="${esc(titre)}" width="392" height="150" loading="lazy">` : ''}
-      <span class="cbadge">${esc(cat)}</span>
-      <button class="cfav" aria-pressed="false" aria-label="Ajouter aux favoris : ${esc(titre)}">&#9825;</button>
+      ${image ? `<img src="${esc(image)}" alt="${esc(title)}" width="392" height="150" loading="lazy">` : ''}
+      <span class="card-badge">${esc(category)}</span>
+      <button class="card-fav" aria-pressed="false" aria-label="Ajouter aux favoris : ${esc(title)}">&#9825;</button>
     </div>
     <div class="card-body">
-      <p class="cdate"><time>${esc(date)}</time></p>
-      <h3>${esc(titre)}</h3>
-      <p class="clieu">${esc(lieu)}</p>
+      <p class="card-date"><time>${esc(date)}</time></p>
+      <h3>${esc(title)}</h3>
+      <p class="card-location">${esc(location)}</p>
     </div>
     <div class="card-footer">
-      ${gratuit ? '<span class="free">Gratuit</span>' : prix ? `<span class="price">${esc(prix)}</span>` : '<span></span>'}
-      <a href="${BASE}event-detail.html?id=${esc(ev.uid)}" class="btn-b">${gratuit ? 'En savoir plus' : 'Réserver'}</a>
+      ${isFree ? '<span class="free">Gratuit</span>' : price ? `<span class="price">${esc(price)}</span>` : '<span></span>'}
+      <a href="${BASE}event-detail.html?id=${esc(ev.uid)}" class="btn-b">${isFree ? 'En savoir plus' : 'Réserver'}</a>
     </div>
   `;
 
-  return art;
+  return article;
 }
 
-/* ---- VOIR PLUS / MOINS ---- */
+/* ---- LOAD MORE / LESS ---- */
 document.getElementById('btn-more')?.addEventListener('click', () => {
   const btn = document.getElementById('btn-more');
   if (btn.dataset.mode === 'moins') {
     offset = 0;
-    charger(0);
+    loadEvents(0);
   } else {
     offset += LIMIT;
-    charger(offset);
+    loadEvents(offset);
   }
 });
 
-/* ---- RESTAURER FAVORIS ---- */
-function restaurerFavoris() {
-  const favs = JSON.parse(localStorage.getItem('villenova_favoris') || '{}');
+/* ---- RESTORE FAVORITES ---- */
+function restoreFavorites() {
+  const favorites = JSON.parse(localStorage.getItem('villenova_favorites') || '{}');
   document.querySelectorAll('#events-grid .card').forEach(card => {
-    if (card.dataset.uid && favs[card.dataset.uid]) {
-      const btn = card.querySelector('.cfav');
+    if (card.dataset.uid && favorites[card.dataset.uid]) {
+      const btn = card.querySelector('.card-fav');
       if (btn) {
         btn.setAttribute('aria-pressed', 'true');
-        btn.setAttribute('aria-label', 'Retirer des favoris : ' + (favs[card.dataset.uid].titre || ''));
+        btn.setAttribute('aria-label', 'Retirer des favoris : ' + (favorites[card.dataset.uid].title || ''));
         btn.innerHTML = '&#9829;';
-        btn.classList.add('cfav--on');
+        btn.classList.add('card-fav--on');
       }
     }
   });
 }
 
-/* ---- CARTE CLIQUABLE ---- */
-['events-grid', 'favoris-grid'].forEach(id => {
+/* ---- CLICKABLE CARD ---- */
+['events-grid', 'favorites-grid'].forEach(id => {
   document.getElementById(id)?.addEventListener('click', e => {
-    if (e.target.closest('.cfav') || e.target.closest('.btn-b')) return;
+    if (e.target.closest('.card-fav') || e.target.closest('.btn-b')) return;
     const card = e.target.closest('.card');
     if (!card?.dataset.uid) return;
     window.location.href = `${BASE}event-detail.html?id=${card.dataset.uid}`;
   });
 });
 
-/* ---- PAGE FAVORIS ---- */
-const favorisGrid = document.getElementById('favoris-grid');
-if (favorisGrid) {
-  const favs   = JSON.parse(localStorage.getItem('villenova_favoris') || '{}');
-  const events = Object.values(favs);
+/* ---- FAVORITES PAGE ---- */
+const favoritesGrid = document.getElementById('favorites-grid');
+if (favoritesGrid) {
+  const favorites = JSON.parse(localStorage.getItem('villenova_favorites') || '{}');
+  const events    = Object.values(favorites);
 
   if (!events.length) {
-    favorisGrid.innerHTML = `<p style="padding:2rem;grid-column:1/-1;color:#6B7280">Aucun favori pour l'instant. Ajoutez des événements depuis l'<a href="index.html" style="color:#1A3A5C;text-decoration:underline">agenda</a>.</p>`;
+    favoritesGrid.innerHTML = `<p style="padding:2rem;grid-column:1/-1;color:#6B7280">Aucun favori pour l'instant. Ajoutez des événements depuis l'<a href="index.html" style="color:#1A3A5C;text-decoration:underline">agenda</a>.</p>`;
   } else {
     events.forEach(ev => {
-      const art = document.createElement('article');
-      art.className   = 'card';
-      art.dataset.cat = ev.cat;
-      art.dataset.uid = ev.uid;
-      art.innerHTML = `
+      const article = document.createElement('article');
+      article.className        = 'card';
+      article.dataset.category = ev.category;
+      article.dataset.uid      = ev.uid;
+      article.innerHTML = `
         <div class="card-img">
-          ${ev.image ? `<img src="${esc(ev.image)}" alt="${esc(ev.titre)}" width="392" height="150" loading="lazy">` : ''}
-          <span class="cbadge">${esc(ev.cat)}</span>
-          <button class="cfav cfav--on" aria-pressed="true" aria-label="Retirer des favoris : ${esc(ev.titre)}">&#9829;</button>
+          ${ev.image ? `<img src="${esc(ev.image)}" alt="${esc(ev.title)}" width="392" height="150" loading="lazy">` : ''}
+          <span class="card-badge">${esc(ev.category)}</span>
+          <button class="card-fav card-fav--on" aria-pressed="true" aria-label="Retirer des favoris : ${esc(ev.title)}">&#9829;</button>
         </div>
         <div class="card-body">
-          <p class="cdate"><time>${esc(ev.date)}</time></p>
-          <h3>${esc(ev.titre)}</h3>
-          <p class="clieu">${esc(ev.lieu)}</p>
+          <p class="card-date"><time>${esc(ev.date)}</time></p>
+          <h3>${esc(ev.title)}</h3>
+          <p class="card-location">${esc(ev.location)}</p>
         </div>
         <div class="card-footer">
-          ${ev.gratuit ? '<span class="free">Gratuit</span>' : ev.prix ? `<span class="price">${esc(ev.prix)}</span>` : '<span></span>'}
-          <a href="${BASE}event-detail.html?id=${esc(ev.uid)}" class="btn-b">${ev.gratuit ? 'En savoir plus' : 'Réserver'}</a>
+          ${ev.isFree ? '<span class="free">Gratuit</span>' : ev.price ? `<span class="price">${esc(ev.price)}</span>` : '<span></span>'}
+          <a href="${BASE}event-detail.html?id=${esc(ev.uid)}" class="btn-b">${ev.isFree ? 'En savoir plus' : 'Réserver'}</a>
         </div>
       `;
-      favorisGrid.appendChild(art);
+      favoritesGrid.appendChild(article);
     });
   }
 
-  favorisGrid.addEventListener('click', e => {
-    const btn = e.target.closest('.cfav');
+  favoritesGrid.addEventListener('click', e => {
+    const btn = e.target.closest('.card-fav');
     if (!btn) return;
     const card = btn.closest('.card');
     const uid  = card?.dataset.uid;
     if (!uid) return;
 
-    const favs = JSON.parse(localStorage.getItem('villenova_favoris') || '{}');
-    delete favs[uid];
-    localStorage.setItem('villenova_favoris', JSON.stringify(favs));
+    const favorites = JSON.parse(localStorage.getItem('villenova_favorites') || '{}');
+    delete favorites[uid];
+    localStorage.setItem('villenova_favorites', JSON.stringify(favorites));
     card.remove();
 
-    if (!favorisGrid.querySelector('.card')) {
-      favorisGrid.innerHTML = `<p style="padding:2rem;grid-column:1/-1;color:#6B7280">Aucun favori pour l'instant. Ajoutez des événements depuis l'<a href="index.html" style="color:#1A3A5C;text-decoration:underline">agenda</a>.</p>`;
+    if (!favoritesGrid.querySelector('.card')) {
+      favoritesGrid.innerHTML = `<p style="padding:2rem;grid-column:1/-1;color:#6B7280">Aucun favori pour l'instant. Ajoutez des événements depuis l'<a href="index.html" style="color:#1A3A5C;text-decoration:underline">agenda</a>.</p>`;
     }
   });
 }
 
 /* ---- INIT AGENDA ---- */
 if (document.getElementById('events-grid')) {
-  charger(0);
+  loadEvents(0);
 }
 
-/* ---- PAGE DETAIL ---- */
+/* ---- EVENT DETAIL PAGE ---- */
 const detailContainer = document.getElementById('event-detail');
 if (detailContainer) {
   const uid = new URLSearchParams(window.location.search).get('id');
@@ -336,7 +336,7 @@ if (detailContainer) {
       .then(r => r.json())
       .then(data => {
         if (!data.event) throw new Error();
-        afficherDetail(data.event, detailContainer);
+        displayDetail(data.event, detailContainer);
       })
       .catch(() => {
         detailContainer.innerHTML = '<div class="w" style="padding:2rem"><p class="card--error">Impossible de charger cet événement.</p><a href="../index.html" class="btn-l" style="margin-top:1rem;display:inline-block">Retour à l\'agenda</a></div>';
@@ -344,62 +344,62 @@ if (detailContainer) {
   }
 }
 
-function afficherDetail(ev, container) {
-  const titre      = ev.title?.fr || 'Sans titre';
+function displayDetail(ev, container) {
+  const title      = ev.title?.fr || 'Sans titre';
   const desc       = ev.longDescription?.fr || ev.description?.fr || '';
   const conditions = typeof ev.conditions === 'string' ? ev.conditions : (ev.conditions?.fr || ev.conditions?.en || '');
-  const gratuit    = /gratuit|free|0\s*€/i.test(conditions.trim());
-  const cat        = (ev.keywords?.fr?.[0] || '')
+  const isFree     = /gratuit|free|0\s*€/i.test(conditions.trim());
+  const category   = (ev.keywords?.fr?.[0] || '')
     .toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/s$/, '');
-  const lieu       = ev.location || {};
-  const adresse    = [lieu.address, lieu.postalCode, lieu.city].filter(Boolean).join(', ');
+  const venue      = ev.location || {};
+  const address    = [venue.address, venue.postalCode, venue.city].filter(Boolean).join(', ');
 
   let imageSrc = null;
   if (ev.image?.base && ev.image?.filename) imageSrc = ev.image.base + ev.image.filename;
 
   const safeLink = ev.onlineAccessLink?.startsWith('https://') ? ev.onlineAccessLink : null;
 
-  const debut   = ev.firstTiming?.begin ? new Date(ev.firstTiming.begin) : null;
-  const fin     = ev.firstTiming?.end   ? new Date(ev.firstTiming.end)   : null;
-  const fmtD    = d => d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  const fmtT    = d => d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+  const start   = ev.firstTiming?.begin ? new Date(ev.firstTiming.begin) : null;
+  const end     = ev.firstTiming?.end   ? new Date(ev.firstTiming.end)   : null;
+  const fmtDate = d => d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const fmtTime = d => d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
   const timings = ev.timings || [];
 
-  document.title = `${esc(titre)} — VilleNova`;
+  document.title = `${esc(title)} — VilleNova`;
 
   container.innerHTML = `
     <div class="w" style="padding-top:2rem;padding-bottom:3rem;">
 
       <a href="../index.html" class="detail-back">← Retour à l'agenda</a>
 
-      ${imageSrc ? `<img src="${esc(imageSrc)}" alt="${esc(titre)}" class="detail-hero-img" decoding="async" loading="eager">` : ''}
+      ${imageSrc ? `<img src="${esc(imageSrc)}" alt="${esc(title)}" class="detail-hero-img" decoding="async" loading="eager">` : ''}
 
       <div class="detail-grid">
 
         <div>
           <div class="detail-meta">
-            ${cat ? `<span class="detail-badge">${esc(cat)}</span>` : ''}
-            ${gratuit ? '<span class="free">Gratuit</span>' : conditions ? `<span class="price">${esc(conditions)}</span>` : ''}
+            ${category ? `<span class="detail-badge">${esc(category)}</span>` : ''}
+            ${isFree ? '<span class="free">Gratuit</span>' : conditions ? `<span class="price">${esc(conditions)}</span>` : ''}
             ${ev.attendanceMode === 2 || ev.attendanceMode === 3 ? '<span class="detail-badge" style="background:#E8501A;">En ligne</span>' : ''}
           </div>
-          <h1 class="detail-title">${esc(titre)}</h1>
+          <h1 class="detail-title">${esc(title)}</h1>
           ${desc ? `<div class="detail-description">${desc}</div>` : ''}
           ${safeLink ? `<div style="margin-top:1.5rem;"><a href="${esc(safeLink)}" class="btn-b" target="_blank" rel="noopener noreferrer">Accéder en ligne</a></div>` : ''}
         </div>
 
         <aside>
-          ${debut ? `
+          ${start ? `
           <div class="detail-info-block">
             <p class="detail-info-label">Date</p>
-            <p class="detail-info-value">${fmtD(debut)}</p>
-            ${fin ? `<p class="detail-info-sub">${fmtT(debut)} – ${fmtT(fin)}</p>` : ''}
+            <p class="detail-info-value">${fmtDate(start)}</p>
+            ${end ? `<p class="detail-info-sub">${fmtTime(start)} – ${fmtTime(end)}</p>` : ''}
           </div>` : ''}
 
-          ${lieu.name ? `
+          ${venue.name ? `
           <div class="detail-info-block">
             <p class="detail-info-label">Lieu</p>
-            <p class="detail-info-value">${esc(lieu.name)}</p>
-            ${adresse ? `<p class="detail-info-sub">${esc(adresse)}</p>` : ''}
+            <p class="detail-info-value">${esc(venue.name)}</p>
+            ${address ? `<p class="detail-info-sub">${esc(address)}</p>` : ''}
           </div>` : ''}
 
           ${timings.length > 1 ? `
@@ -408,7 +408,7 @@ function afficherDetail(ev, container) {
             <ul class="detail-timings">
               ${timings.slice(0, 8).map(t => {
                 const d = new Date(t.begin);
-                return `<li>${d.toLocaleDateString('fr-FR', {weekday:'short',day:'numeric',month:'short'})} · ${fmtT(d)}</li>`;
+                return `<li>${d.toLocaleDateString('fr-FR', {weekday:'short',day:'numeric',month:'short'})} · ${fmtTime(d)}</li>`;
               }).join('')}
               ${timings.length > 8 ? `<li class="detail-info-sub">+ ${timings.length - 8} autres dates</li>` : ''}
             </ul>
