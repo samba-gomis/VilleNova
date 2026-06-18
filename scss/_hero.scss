@@ -1,0 +1,36 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.hero {
+  background: $primary; color: $white; padding: 2.5rem 1rem 2rem;
+
+  h1 { font-family: $font-title; font-size: clamp(1.8rem, 6vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem;
+    em { font-style: normal; color: $accent; }
+  }
+  p { color: rgba($white, .65); font-size: 1rem; margin-bottom: 1.5rem; font-weight: 300; max-width: 520px; }
+
+  @include bp(md) { padding: 4rem 0 3rem; }
+}
+
+.search {
+  background: $white; border-radius: 10px;
+  display: flex; flex-direction: column; overflow: hidden;
+  max-width: 640px; margin-bottom: 1.5rem;
+
+  input, select { border: none; outline: none; padding: .9rem 1rem; font-size: .95rem; font-family: $font-body; color: $dark; background: $white; width: 100%; }
+  select { border-top: 1px solid $border; cursor: pointer; }
+  button { @include btn($secondary); border-radius: 0; padding: .9rem 1.5rem; }
+
+  @include bp(sm) {
+    flex-direction: row; align-items: stretch;
+    input  { flex: 1; }
+    select { border-top: none; border-left: 1px solid $border; width: auto; }
+  }
+}
+
+.hero-stats {
+  display: flex; flex-wrap: wrap; gap: 1.5rem;
+  li      { display: flex; flex-direction: column; }
+  strong  { font-family: $font-title; font-size: clamp(1.3rem, 4vw, 1.6rem); font-weight: 800; color: $accent; line-height: 1; }
+  span    { font-size: .8rem; color: rgba($white, .5); margin-top: 2px; }
+}

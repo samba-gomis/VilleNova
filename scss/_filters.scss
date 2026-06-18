@@ -1,0 +1,20 @@
+@use 'variables' as *;
+
+.filters {
+  background: $white; border-bottom: 1px solid $border; padding: 0 1rem;
+  position: sticky; top: $nav-h; z-index: 90;
+
+  .w { display: flex; align-items: center; gap: .5rem; min-height: 56px; overflow-x: auto; scrollbar-width: none; padding: .5rem 1rem;
+    &::-webkit-scrollbar { display: none; }
+  }
+}
+
+.flabel { font-size: .75rem; color: $gray; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; margin-right: 4px; }
+.chips  { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+
+.chip {
+  border: 1.5px solid $border; border-radius: 20px; padding: .35rem .9rem;
+  font-size: .85rem; color: $dark; background: none; cursor: pointer; white-space: nowrap; font-family: $font-body; transition: all .18s;
+  &:hover { border-color: $primary; color: $primary; }
+  &.on, &[aria-pressed="true"] { background: $primary; border-color: $primary; color: $white; font-weight: 500; }
+}
