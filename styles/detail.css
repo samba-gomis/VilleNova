@@ -1,25 +1,35 @@
-/* ---- EVENEMENT DETAIL PAGE---- */
+/* =========================================================
+   VilleNova — detail.css  v2.0
+   ========================================================= */
+
+#event-detail { min-height: 60vh; }
+
+#event-detail-loading {
+  padding: 5rem 1rem;
+  text-align: center;
+  color: var(--c-muted);
+  font-size: 1rem;
+}
 
 .detail-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: #1A3A5C;
-  font-size: 0.9rem;
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--c-primary);
+  font-size: .9rem;
   font-weight: 500;
-  margin-bottom: 1.75rem;
-  transition: color 0.2s;
+  margin-bottom: 2rem;
+  transition: color 220ms cubic-bezier(.4,0,.2,1), gap 220ms cubic-bezier(.4,0,.2,1);
 }
-.detail-back:hover { color: #E8501A; }
+
+.detail-back:hover { color: var(--c-secondary); gap: .6rem; }
 
 .detail-hero-img {
   width: 100%;
-  max-height: 420px;
+  max-height: 440px;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 2rem;
-  background: #D1CEC6;
-  min-height: 200px;
+  border-radius: 16px;
+  margin-bottom: 2.25rem;
+  background: linear-gradient(135deg, #1A3A5C 0%, #243F65 100%);
+  min-height: 220px;
 }
 
 .detail-grid {
@@ -28,90 +38,78 @@
   gap: 2rem;
   align-items: start;
 }
-@media (min-width: 768px) {
-  .detail-grid { grid-template-columns: 2fr 1fr; }
-}
 
-.detail-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
+@media (min-width: 768px) { .detail-grid { grid-template-columns: 3fr 2fr; gap: 3rem; } }
+
+.detail-meta { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
 
 .detail-badge {
-  background: #1A3A5C;
-  color: #FFFFFF;
-  font-size: 0.75rem;
+  background: var(--c-primary);
+  color: #fff;
+  font-size: .72rem;
   font-weight: 700;
-  padding: 0.3rem 0.75rem;
-  border-radius: 20px;
+  padding: .3rem .85rem;
+  border-radius: 9999px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: .06em;
 }
 
 .detail-title {
   font-family: "Syne", sans-serif;
-  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-size: clamp(1.65rem, 5vw, 2.6rem);
   font-weight: 800;
-  color: #1A3A5C;
+  color: var(--c-text);
   margin-bottom: 1.5rem;
-  line-height: 1.15;
+  line-height: 1.12;
+  letter-spacing: -.02em;
 }
 
 .detail-description {
   font-size: 1rem;
-  line-height: 1.85;
-  color: #1C1C1C;
+  line-height: 1.9;
+  color: var(--c-text);
 }
+
 .detail-description p { margin-bottom: 1rem; }
 
+/* aside info blocks */
 .detail-info-block {
-  background: #FFFFFF;
-  border: 1px solid #D1CEC6;
-  border-left: 4px solid #1A3A5C;
-  border-radius: 8px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-left: 4px solid var(--c-primary);
+  border-radius: 10px;
   padding: 1.1rem 1.25rem;
   margin-bottom: 1rem;
+  transition: box-shadow 220ms cubic-bezier(.4,0,.2,1);
 }
 
+.detail-info-block:hover { box-shadow: 0 4px 16px rgba(15,23,42,.08); }
+
 .detail-info-label {
-  font-size: 0.75rem;
+  font-size: .72rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #6B7280;
-  margin-bottom: 0.3rem;
+  letter-spacing: .08em;
+  color: var(--c-muted);
+  margin-bottom: .35rem;
   font-weight: 700;
 }
 
 .detail-info-value {
-  font-size: 0.95rem;
+  font-size: .95rem;
   font-weight: 600;
-  color: #1C1C1C;
-  line-height: 1.4;
+  color: var(--c-text);
+  line-height: 1.45;
 }
 
-.detail-info-sub {
-  font-size: 0.88rem;
-  color: #6B7280;
-  margin-top: 0.2rem;
-}
+.detail-info-sub { font-size: .88rem; color: var(--c-muted); margin-top: .3rem; }
 
-.detail-timings {
-  list-style: none;
-  padding: 0;
-  margin-top: 0.5rem;
-}
+.detail-timings { list-style: none; padding: 0; margin-top: .6rem; }
+
 .detail-timings li {
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #D1CEC6;
-  font-size: 0.9rem;
-  color: #1C1C1C;
+  padding: .4rem 0;
+  border-bottom: 1px solid var(--c-border);
+  font-size: .9rem;
+  color: var(--c-text);
 }
-.detail-timings li:last-child { border-bottom: none; }
 
-#event-detail-loading {
-  padding: 4rem 1rem;
-  text-align: center;
-  color: #6B7280;
-}
+.detail-timings li:last-child { border-bottom: none; }

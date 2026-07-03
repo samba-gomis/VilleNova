@@ -11,7 +11,6 @@
   <link rel="icon" type="image/webp" href="../images/VilleNova.webp">
   <link rel="stylesheet" href="../styles/style.css">
   <link rel="stylesheet" href="../styles/about.css">
-
 </head>
 <body>
 
@@ -29,9 +28,10 @@
         <li><a href="../index.html">Agenda</a></li>
         <li><a href="#">Carte</a></li>
         <li><a href="#">Partenaires</a></li>
-        <li><a href="about.html" aria-current="page">A propos</a></li>
+        <li><a href="about.html" aria-current="page">À propos</a></li>
         <li><a href="favorites.html" class="nav-cta">Mes favoris</a></li>
       </ul>
+      <button class="nav-theme" id="theme-toggle" aria-label="Changer le thème" title="Mode sombre">☀</button>
     </div>
   </nav>
 
@@ -54,19 +54,38 @@
           culturelle locale</strong> en rendant la culture accessible à tous, tout en affirmant
           l'image d'une ville moderne, inclusive et responsable sur le plan environnemental.
         </p>
-        <p class="about-lead" style="margin-top:1rem;">
-          Concerts; expositions; spectacles; ateliers; cinema, chaque événement trouve sa place sur
+        <p class="about-lead">
+          Concerts, expositions, spectacles, ateliers, cinéma — chaque événement trouve sa place sur
           VilleNova, qu'il soit gratuit ou payant, grand public ou confidentiel. Parce que la
           culture appartient à tout le monde.
         </p>
+
+        <div class="about-stats" aria-label="Chiffres clés">
+          <div class="about-stat">
+            <strong>34</strong>
+            <span>lieux culturels</span>
+          </div>
+          <div class="about-stat">
+            <strong>42%</strong>
+            <span>entrée gratuite</span>
+          </div>
+          <div class="about-stat">
+            <strong>6</strong>
+            <span>catégories</span>
+          </div>
+          <div class="about-stat">
+            <strong>2026</strong>
+            <span>lancement</span>
+          </div>
+        </div>
 
         <div class="pillars" role="list">
           <article class="pillar" role="listitem">
             <span class="pillar-icon" aria-hidden="true">🎭</span>
             <h3>Accessibilité</h3>
             <p>
-              Tous les événements de la ville réunis en un seul endroit. Filtres par catégorie;
-              par date; par lieu; trouvez ce qui vous correspond en quelques secondes, gratuitement.
+              Tous les événements de la ville réunis en un seul endroit. Filtres par catégorie,
+              par date, par lieu — trouvez ce qui vous correspond en quelques secondes, gratuitement.
             </p>
           </article>
           <article class="pillar" role="listitem">
@@ -80,7 +99,7 @@
           </article>
           <article class="pillar" role="listitem">
             <span class="pillar-icon" aria-hidden="true">🌿</span>
-            <h3>Eco-responsabilité</h3>
+            <h3>Éco-responsabilité</h3>
             <p>
               VilleNova est conçue selon les principes du numérique responsable : pages légères,
               images optimisées, chargement frugal. La culture à portée de clic, sans surcharge
@@ -102,7 +121,7 @@
     <div class="w">
       <div>
         <h2 id="newsletter-title">Ne manquez plus rien</h2>
-        <p>Notre selection culturelle chaque semaine dans votre boite mail</p>
+        <p>Notre sélection culturelle chaque semaine dans votre boîte mail</p>
       </div>
       <form action="#" method="post" aria-label="Inscription newsletter">
         <label for="email" class="sr-only">Votre email</label>
@@ -116,23 +135,48 @@
     <div class="w">
       <div class="brand">
         <img src="../images/VilleNova.webp" alt="VilleNova" width="130" height="44" loading="lazy">
-        <p>La plateforme culturelle officielle de VilleNova</p>
-        <span class="eco">Site eco-responsable - France</span>
+        <p>La plateforme culturelle officielle de VilleNova — culture accessible à tous.</p>
+        <span class="eco">Site éco-responsable · France</span>
+      </div>
+      <div>
+        <h3>Découvrir</h3>
+        <ul>
+          <li><a href="../index.html">Agenda</a></li>
+          <li><a href="#">Carte des lieux</a></li>
+          <li><a href="#">Partenaires</a></li>
+          <li><a href="about.html">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Mon espace</h3>
+        <ul>
+          <li><a href="favorites.html">Mes favoris</a></li>
+          <li><a href="#">Proposer un événement</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="#">Mairie de VilleNova</a></li>
+          <li><a href="#">Presse</a></li>
+          <li><a href="#">Partenariats</a></li>
+        </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="w">
-        <small> 2026 Mairie de VilleNova</small>
-        <nav aria-label="Liens legaux">
-          <a href="#">Mentions legales</a>
-          <a href="#">Confidentialite</a>
-          <a href="#">Accessibilite</a>
+        <small>© 2026 Mairie de VilleNova</small>
+        <nav aria-label="Liens légaux">
+          <a href="#">Mentions légales</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">Accessibilité</a>
         </nav>
       </div>
     </div>
   </footer>
 
   <script src="../scripts/utils.js"></script>
+  <script src="../scripts/theme.js"></script>
   <script src="../scripts/nav.js"></script>
 </body>
 </html>

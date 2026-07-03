@@ -1,6 +1,5 @@
 'use strict';
 
-// Build query string for date range based on the date select value
 function buildDateParams() {
   const filter = document.getElementById('date')?.value;
   if (!filter) return '';
@@ -9,7 +8,7 @@ function buildDateParams() {
   let gte, lte;
 
   if (filter === 'weekend') {
-    const day = now.getDay(); // 0 = Sunday, 6 = Saturday
+    const day = now.getDay();
     const sat = new Date(now);
     sat.setDate(now.getDate() + (day === 6 ? 0 : day === 0 ? 0 : 6 - day));
     sat.setHours(0, 0, 0, 0);
@@ -31,13 +30,32 @@ function buildDateParams() {
   return params;
 }
 
-// Fetch events from OpenAgenda and render them into the grid
+function showSkeletons(grid, count = 6) {
+  grid.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const art = document.createElement('article');
+    art.className = 'card card--skeleton';
+    art.innerHTML = `
+      <div class="card-img skeleton"></div>
+      <div class="card-body">
+        <div class="skeleton" style="height:.7rem;width:60%;margin-bottom:.75rem;"></div>
+        <div class="skeleton" style="height:1rem;width:90%;margin-bottom:.4rem;"></div>
+        <div class="skeleton" style="height:1rem;width:75%;margin-bottom:.9rem;"></div>
+        <div class="skeleton" style="height:.7rem;width:50%;"></div>
+      </div>
+      <div class="card-footer">
+        <div class="skeleton" style="height:1.5rem;width:60px;border-radius:9999px;"></div>
+        <div class="skeleton" style="height:1.8rem;width:80px;border-radius:6px;"></div>
+      </div>`;
+    grid.appendChild(art);
+  }
+}
+
 async function loadEvents(off) {
-  const loading = document.getElementById('loading');
-  const grid    = document.getElementById('events-grid');
+  const grid = document.getElementById('events-grid');
   if (!grid) return;
 
-  if (loading) loading.hidden = false;
+  if (off === 0) showSkeletons(grid, LIMIT);
 
   const query = document.getElementById('q')?.value.trim() || '';
 
@@ -55,8 +73,8 @@ async function loadEvents(off) {
     restoreFavorites();
     applyFilter();
 
-    const loaded       = grid.querySelectorAll('.card').length;
-    const visibleCount = grid.querySelectorAll('.card:not([hidden])').length;
+    const loaded       = grid.querySelectorAll('.card:not(.card--skeleton)').length;
+    const visibleCount = grid.querySelectorAll('.card:not([hidden]):not(.card--skeleton)').length;
     const resultsCount = document.getElementById('results-count');
     const counter      = document.getElementById('counter');
     if (resultsCount) resultsCount.textContent = total;
@@ -76,18 +94,14 @@ async function loadEvents(off) {
     }
 
   } catch {
-    grid.innerHTML = '<p role="alert" class="card--error">Impossible de charger les événements.</p>';
-  } finally {
-    if (loading) loading.hidden = true;
+    grid.innerHTML = '<p role="alert" class="card--error">Impossible de charger les événements. Vérifiez votre connexion.</p>';
   }
 }
 
-// Load more / load less pagination
 document.getElementById('btn-more')?.addEventListener('click', () => {
   const btn = document.getElementById('btn-more');
   if (btn.dataset.mode === 'moins') { offset = 0; loadEvents(0); }
   else                              { offset += LIMIT; loadEvents(offset); }
 });
 
-// Entry point — only runs on the index page
 if (document.getElementById('events-grid')) loadEvents(0);

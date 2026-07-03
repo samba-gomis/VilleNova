@@ -1,24 +1,30 @@
-// Couleurs
+// ---- Design tokens (mirrored as CSS custom properties in _base.scss) ----
+
+// Brand colors
 $primary:   #1A3A5C;
 $secondary: #E8501A;
 $accent:    #F5C842;
-$light:     #F7F5F0;
-$dark:      #1C1C1C;
-$gray:      #6B7280;
-$border:    #D1CEC6;
+$light:     #F4F1EC;
+$dark:      #0F172A;
+$gray:      #64748B;
+$border:    #DDD9D0;
 $white:     #FFFFFF;
-$green:     #15803D;
+$green:     #16A34A;
 $green-bg:  #DCFCE7;
 
-// Typo
-$font-title: 'Syne', sans-serif;
-$font-body:  'DM Sans', sans-serif;
+// Typography
+$font-title: 'Syne', system-ui, sans-serif;
+$font-body:  'DM Sans', system-ui, sans-serif;
 
 // Layout
-$max-w:    1200px;
-$nav-h:    64px;
+$max-w:  1200px;
+$nav-h:  64px;
 
-// Breakpoints
+// Breakpoints (mobile-first)
 $sm: 480px;
 $md: 768px;
 $lg: 1024px;
+
+// Easing
+$ease: cubic-bezier(.4,0,.2,1);
+$dur:  220ms;

@@ -27,24 +27,25 @@
         <li><a href="../index.html">Agenda</a></li>
         <li><a href="#">Carte</a></li>
         <li><a href="#">Partenaires</a></li>
-        <li><a href="about.html">A propos</a></li>
+        <li><a href="about.html">À propos</a></li>
         <li><a href="favorites.html" class="nav-cta" aria-current="page">Mes favoris</a></li>
       </ul>
+      <button class="nav-theme" id="theme-toggle" aria-label="Changer le thème" title="Mode sombre">☀</button>
     </div>
   </nav>
 
   <header class="hero">
     <div class="w">
       <h1>Mes <em>favoris</em></h1>
-      <p>Retrouvez ici tous les evenements que vous avez mis en favori.</p>
+      <p>Retrouvez ici tous les événements que vous avez mis en favori.</p>
     </div>
   </header>
 
   <main id="main">
-    <div class="w" style="padding-top:2rem;padding-bottom:3rem;">
+    <div class="w" style="padding-top:2.5rem;padding-bottom:4rem;">
       <div id="favorites-grid" class="grid"></div>
-      <div style="margin-top:2rem;">
-        <a href="../index.html" class="btn-l">Retour a l'agenda</a>
+      <div style="margin-top:2.5rem;">
+        <a href="../index.html" class="btn-l">← Retour à l'agenda</a>
       </div>
     </div>
   </main>
@@ -53,23 +54,48 @@
     <div class="w">
       <div class="brand">
         <img src="../images/VilleNova.webp" alt="VilleNova" width="130" height="44" loading="lazy">
-        <p>La plateforme culturelle officielle de VilleNova</p>
-        <span class="eco">Site eco-responsable - France</span>
+        <p>La plateforme culturelle officielle de VilleNova — culture accessible à tous.</p>
+        <span class="eco">Site éco-responsable · France</span>
+      </div>
+      <div>
+        <h3>Découvrir</h3>
+        <ul>
+          <li><a href="../index.html">Agenda</a></li>
+          <li><a href="#">Carte des lieux</a></li>
+          <li><a href="#">Partenaires</a></li>
+          <li><a href="about.html">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Mon espace</h3>
+        <ul>
+          <li><a href="favorites.html">Mes favoris</a></li>
+          <li><a href="#">Proposer un événement</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="#">Mairie de VilleNova</a></li>
+          <li><a href="#">Presse</a></li>
+          <li><a href="#">Partenariats</a></li>
+        </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="w">
-        <small> 2026 Mairie de VilleNova</small>
-        <nav aria-label="Liens legaux">
-          <a href="#">Mentions legales</a>
-          <a href="#">Confidentialite</a>
-          <a href="#">Accessibilite</a>
+        <small>© 2026 Mairie de VilleNova</small>
+        <nav aria-label="Liens légaux">
+          <a href="#">Mentions légales</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">Accessibilité</a>
         </nav>
       </div>
     </div>
   </footer>
 
   <script src="../scripts/utils.js"></script>
+  <script src="../scripts/theme.js"></script>
   <script src="../scripts/nav.js"></script>
   <script src="../scripts/card.js"></script>
   <script src="../scripts/favorites.js"></script>

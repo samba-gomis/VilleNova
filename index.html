@@ -27,20 +27,21 @@
         <li><a href="index.html" aria-current="page">Agenda</a></li>
         <li><a href="#">Carte</a></li>
         <li><a href="#">Partenaires</a></li>
-        <li><a href="html/about.html">A propos</a></li>
+        <li><a href="html/about.html">À propos</a></li>
         <li><a href="html/favorites.html" class="nav-cta">Mes favoris</a></li>
       </ul>
+      <button class="nav-theme" id="theme-toggle" aria-label="Changer le thème" title="Mode sombre">☀</button>
     </div>
   </nav>
 
   <header class="hero">
     <div class="w">
-      <h1>La culture de <em>VilleNova</em>, pour tous</h1>
+      <h1>La culture de <em>VilleNova</em>,<br>pour tous</h1>
       <p>Concerts, expositions, spectacles — l'agenda culturel de votre ville</p>
       <form class="search" role="search" action="#" method="get">
-        <label for="q" class="sr-only">Rechercher</label>
-        <input id="q" type="search" name="q" placeholder="Concert, exposition..." autocomplete="off">
-        <label for="date" class="sr-only">Date</label>
+        <label for="q" class="sr-only">Rechercher un événement</label>
+        <input id="q" type="search" name="q" placeholder="Concert, exposition, spectacle..." autocomplete="off">
+        <label for="date" class="sr-only">Filtrer par date</label>
         <select id="date" name="date">
           <option value="">Toutes les dates</option>
           <option value="weekend">Ce week-end</option>
@@ -50,7 +51,7 @@
         <button type="submit">Rechercher</button>
       </form>
       <ul class="hero-stats" aria-label="Chiffres clés">
-        <li><strong id="results-count">0</strong><span>événements</span></li>
+        <li><strong id="results-count">—</strong><span>événements</span></li>
         <li><strong>34</strong><span>lieux culturels</span></li>
         <li><strong>42%</strong><span>entrée gratuite</span></li>
       </ul>
@@ -60,12 +61,12 @@
   <div class="filters" aria-label="Filtres">
     <div class="w">
       <span class="filter-label" aria-hidden="true">Filtrer</span>
-      <div class="chips" role="group" aria-label="Categories">
-        <button class="chip on" aria-pressed="true" data-filter="tous">Tous</button>
+      <div class="chips" role="group" aria-label="Catégories">
+        <button class="chip on" aria-pressed="true"  data-filter="tous">Tous</button>
         <button class="chip" aria-pressed="false" data-filter="concert">Concerts</button>
         <button class="chip" aria-pressed="false" data-filter="exposition">Expositions</button>
         <button class="chip" aria-pressed="false" data-filter="spectacle">Spectacles</button>
-        <button class="chip" aria-pressed="false" data-filter="cinema">Cinema</button>
+        <button class="chip" aria-pressed="false" data-filter="cinema">Cinéma</button>
         <button class="chip" aria-pressed="false" data-filter="danse">Danse</button>
         <button class="chip" aria-pressed="false" data-filter="atelier">Ateliers</button>
       </div>
@@ -76,13 +77,13 @@
     <div class="w">
 
       <p class="count" aria-live="polite">
-        <span id="counter">0</span> evenements trouves
+        <span id="counter">0</span> événements trouvés
       </p>
 
       <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
 
       <div id="loading" class="loading" role="status" aria-live="polite" hidden>
-        Chargement en cours...
+        Chargement en cours…
       </div>
 
       <div id="events-grid" class="grid"></div>
@@ -98,7 +99,7 @@
     <div class="w">
       <div>
         <h2 id="newsletter-title">Ne manquez plus rien</h2>
-        <p>Notre selection culturelle chaque semaine dans votre boite mail</p>
+        <p>Notre sélection culturelle chaque semaine dans votre boîte mail</p>
       </div>
       <form action="#" method="post" aria-label="Inscription newsletter">
         <label for="email" class="sr-only">Votre email</label>
@@ -112,23 +113,50 @@
     <div class="w">
       <div class="brand">
         <img src="images/VilleNova.webp" alt="VilleNova" width="130" height="44" loading="lazy">
-        <p>La plateforme culturelle officielle de VilleNova</p>
-        <span class="eco">Site eco-responsable - France</span>
+        <p>La plateforme culturelle officielle de VilleNova — culture accessible à tous.</p>
+        <span class="eco">Site éco-responsable · France</span>
+      </div>
+      <div>
+        <h3>Découvrir</h3>
+        <ul>
+          <li><a href="index.html">Agenda</a></li>
+          <li><a href="#">Carte des lieux</a></li>
+          <li><a href="#">Partenaires</a></li>
+          <li><a href="html/about.html">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Mon espace</h3>
+        <ul>
+          <li><a href="html/favorites.html">Mes favoris</a></li>
+          <li><a href="#">Proposer un événement</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="#">Mairie de VilleNova</a></li>
+          <li><a href="#">Presse</a></li>
+          <li><a href="#">Partenariats</a></li>
+        </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="w">
-        <small> 2026 Mairie de VilleNova</small>
-        <nav aria-label="Liens legaux">
-          <a href="#">Mentions legales</a>
-          <a href="#">Confidentialite</a>
-          <a href="#">Accessibilite</a>
+        <small>© 2026 Mairie de VilleNova</small>
+        <nav aria-label="Liens légaux">
+          <a href="#">Mentions légales</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">Accessibilité</a>
         </nav>
       </div>
     </div>
   </footer>
 
+  <button class="scroll-top" id="scroll-top" aria-label="Retour en haut">↑</button>
+
   <script src="scripts/utils.js"></script>
+  <script src="scripts/theme.js"></script>
   <script src="scripts/nav.js"></script>
   <script src="scripts/filter.js"></script>
   <script src="scripts/card.js"></script>
