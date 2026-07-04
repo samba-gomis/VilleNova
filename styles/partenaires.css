@@ -1,0 +1,139 @@
+/* =========================================================
+   VilleNova — partenaires.css  v1.0
+   ========================================================= */
+
+.partners-intro {
+  padding: 3.5rem 1.25rem 2rem;
+}
+
+.partners-intro p {
+  max-width: 640px;
+  font-size: 1.05rem;
+  color: var(--c-muted);
+  line-height: 1.75;
+  margin-top: .75rem;
+}
+
+.partners-section-title {
+  font-family: "Syne", sans-serif;
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  font-weight: 800;
+  color: var(--c-primary);
+  letter-spacing: -.02em;
+}
+
+.partners-section-title em { font-style: normal; color: var(--c-secondary); }
+
+/* category block */
+.partners-category {
+  padding: 0 1.25rem 3.5rem;
+}
+
+.partners-category-label {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--c-muted);
+  margin-bottom: 1.25rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid var(--c-border);
+  width: 100%;
+}
+
+/* grid */
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 540px) { .partners-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .partners-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1024px) { .partners-grid { grid-template-columns: repeat(5, 1fr); } }
+
+/* card */
+.partner-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 14px;
+  padding: 1.75rem 1.25rem 1.25rem;
+  text-decoration: none;
+  color: var(--c-text);
+  transition: transform 220ms cubic-bezier(.4,0,.2,1),
+              box-shadow 220ms cubic-bezier(.4,0,.2,1),
+              border-color 220ms cubic-bezier(.4,0,.2,1);
+  cursor: pointer;
+}
+
+.partner-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 36px rgba(15,23,42,.12);
+  border-color: transparent;
+  text-decoration: none;
+}
+
+/* logo block — initials only, zero image request */
+.partner-logo {
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Syne", sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #fff;
+  letter-spacing: -.02em;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.partner-name {
+  font-family: "Syne", sans-serif;
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--c-text);
+  margin-bottom: .35rem;
+  line-height: 1.25;
+}
+
+.partner-desc {
+  font-size: .78rem;
+  color: var(--c-muted);
+  line-height: 1.55;
+  margin-bottom: .9rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.partner-visit {
+  margin-top: auto;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--c-primary);
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  transition: gap 180ms cubic-bezier(.4,0,.2,1);
+}
+
+.partner-card:hover .partner-visit { gap: .55rem; }
+
+/* section separator */
+.partners-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--c-border);
+  margin: 0 0 2.5rem;
+}
