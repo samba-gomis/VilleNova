@@ -24,12 +24,20 @@ function isDark() {
 }
 
 // Init map — center on France, will auto-fit to events
-const map = L.map('map', {
-  center: [46.6, 2.3],
-  zoom: 6,
-  zoomControl: true,
-  attributionControl: true
-});
+let map;
+try {
+  map = L.map('map', {
+    center: [46.6, 2.3],
+    zoom: 6,
+    zoomControl: true,
+    attributionControl: true
+  });
+} catch (e) {
+  console.error('[VilleNova Map] init error:', e);
+  document.getElementById('map-error').hidden = false;
+  document.getElementById('map-loading').hidden = true;
+  throw e;
+}
 
 let tileLayer;
 
@@ -37,7 +45,7 @@ function applyTiles() {
   if (tileLayer) map.removeLayer(tileLayer);
   if (isDark()) {
     tileLayer = L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
       { attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>', maxZoom: 19 }
     ).addTo(map);
   } else {
@@ -49,6 +57,9 @@ function applyTiles() {
 }
 
 applyTiles();
+
+// Force Leaflet to recalculate container size after CSS layout is settled
+setTimeout(() => map.invalidateSize(), 100);
 
 // Switch tiles when theme changes
 const themeBtn = document.getElementById('theme-toggle');
@@ -66,6 +77,7 @@ async function loadMapEvents() {
   try {
     const url = `https://api.openagenda.com/v2/agendas/${AGENDA_ID}/events?key=${API_KEY}&limit=50&detailed=1`;
     const res  = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const events = data.events || [];
 
@@ -159,7 +171,8 @@ async function loadMapEvents() {
       countEl.closest('.map-count').innerHTML += ' — <em>aucun événement géolocalisé pour cet agenda</em>';
     }
 
-  } catch {
+  } catch (e) {
+    console.error('[VilleNova Map]', e);
     if (errorEl) errorEl.hidden = false;
   } finally {
     if (loadingEl) {

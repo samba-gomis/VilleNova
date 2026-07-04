@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
   <link rel="icon" type="image/webp" href="../images/VilleNova.webp">
   <!-- Leaflet CSS — open-source, ~5 KB gzip -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="../styles/style.css">
   <link rel="stylesheet" href="../styles/carte.css">
 </head>
@@ -69,7 +69,7 @@
     </div>
 
     <!-- map -->
-    <div style="position:relative;flex:1;min-height:0;">
+    <div class="map-wrap">
       <div id="map" aria-label="Carte interactive des événements"></div>
       <div class="map-loading" id="map-loading" aria-live="polite">Chargement de la carte…</div>
       <div class="map-error" id="map-error" hidden role="alert">
@@ -80,7 +80,7 @@
   </main>
 
   <!-- Leaflet JS — open-source, ~42 KB gzip -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WPeE=" crossorigin></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="../scripts/utils.js"></script>
   <script src="../scripts/theme.js"></script>
   <script src="../scripts/nav.js"></script>

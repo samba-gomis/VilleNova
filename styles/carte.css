@@ -77,11 +77,19 @@ body.page-carte main {
   flex-shrink: 0;
 }
 
-/* map container */
-#map {
+/* map wrapper — must be position:relative for overlays */
+.map-wrap {
+  position: relative;
   flex: 1;
   min-height: 0;
+}
+
+/* map fills its wrapper absolutely */
+#map {
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
 }
 
 /* leaflet popup overrides */
@@ -214,11 +222,11 @@ body.page-carte main {
 
 .map-loading.hidden { opacity: 0; pointer-events: none; }
 
-/* error */
+/* error — hidden by default, display:flex only when [hidden] is removed */
 .map-error {
+  display: none;
   position: absolute;
   inset: 0;
-  display: flex;
   align-items: center;
   justify-content: center;
   z-index: 500;
@@ -227,6 +235,10 @@ body.page-carte main {
   font-size: .95rem;
   text-align: center;
   padding: 2rem;
+}
+
+.map-error:not([hidden]) {
+  display: flex;
 }
 
 /* no footer on this page — save render */
